@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="fleet_bid_action" model="ir.actions.act_window">
+        <field name="name">Bid</field>
+        <field name="res_model">fleet.bid</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record id="fleet_bid_view_list" model="ir.ui.view">
+        <field name="name">list view</field>
+        <field name="model">fleet.bid</field>
+        <field name="arch" type="xml">
+            <list string="list view" >
+                <field name="bid_id"/>
+                <field name="auction_id"/>
+                <field name="bid_customer_id"/>
+                <field name="bid_price"/>
+                <field name="bid_amount"/>
+                <field name="user_id"/>
+                <field name="states"/>
+            </list>
+        </field>
+    </record>
+    <record id="fleet_bid_view_form" model="ir.ui.view">
+        <field name="name">form view</field>
+        <field name="model">fleet.bid</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <header>
+                    <button name="bid_confirm" type="object" class="btn-primary"
+                            string="Confirm"
+                            groups="fleet_auction.group_fleet_manager"
+                            invisible="states in ('confirmed')"/>
+                    <field name="states" widget="statusbar"
+                           options="{'clickable':'1'}"
+                           statusbar_visible="draft,confirmed"/>
+                    <!--                       groups="fleet_auction.group_fleet_manager"/>-->
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="bid_id" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="auction_id"/>
+                            <field name="bid_price"/>
+                            <field name="bid_date"/>
+                            <field name="bid_customer_id"/>
+                            <field name="phone"/>
+                        </group>
+                        <group>
+                            <field name="currency_id"/>
+                            <field name="bid_amount"/>
+                            <field name="user_id"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+</odoo>

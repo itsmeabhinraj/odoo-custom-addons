@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="test_menu_root" name="Associated Products">
+        <menuitem id="first_level_menu" name="sale order" action="sale_inherit"/>
+        <menuitem id="second_level_menu" name="customer" action="customer_inherit"/>
+    </menuitem>
+</odoo>
+

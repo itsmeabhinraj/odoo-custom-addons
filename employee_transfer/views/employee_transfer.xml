@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+<!--    list form  -->
+    <record id="employee_transfer_view_list" model="ir.ui.view">
+        <field name="name">employee.transfer.list.view</field>
+        <field name="model">employee.transfer</field>
+        <field name="arch" type="xml">
+            <list string="list view">
+                <field name="employee_id"/>
+                <field name="current_company_id" string="From"/>
+                <field name="choosen_company_id" string="TO"/>
+                <field name="transfer_state" string="Status"/>
+            </list>
+        </field>
+    </record>
+<!--    view form  -->
+    <record id="employee_transfer_form" model="ir.ui.view">
+        <field name="name">transfer.employe.form</field>
+        <field name="model">employee.transfer</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <header>
+                    <button name="submit_request" type="object"
+                            class="btn-primary"
+                            string="Request transfer"
+                            invisible="transfer_state not in ('draft')"
+                            groups="base.group_user"/>
+                    <button name="confirm_request" type="object"
+                            invisible="transfer_state not in ('submitted')"
+                            string="Approve" class="btn-primary"
+                            groups="hr.group_hr_user"/>
+                    <button name="refuse_request" type="object"
+                            invisible="transfer_state not in ('submitted')"
+                            string="Refuse" groups="hr.group_hr_user"/>
+                    <button name="cancel_request" type="object"
+                            string="Cancel"
+                            invisible="transfer_state not in ('submitted')"/>
+                    <field name="transfer_state" widget="statusbar" groups="hr.group_hr_user"
+                           options="{'clickable':'1'}"
+                           statusbar_visible="draft,submitted,approved"/>
+                    <field name="transfer_state" widget="statusbar" groups="!hr.group_hr_user"
+                           statusbar_visible="draft,submitted,approved"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" readonly="1"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id"/>
+                            <field name="current_company_id"/>
+                            <field name="reason"/>
+                        </group>
+                        <group>
+                            <field name="request_date" string="Date"/>
+                            <field name="choosen_company_id"
+                                   invisible="check_company_field == True" readonly="transfer_state in ('approved')"/>
+                        </group>
+                    </group>
+                </sheet>
+                <chatter>
+                    <div class='oe_chatter'>
+                        <field name="message_follower_ids" widget="mail_folowers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </chatter>
+            </form>
+        </field>
+    </record>
+<!--    search section -->
+<!--    <record id="employee_transfer_list_search" model="ir.ui.view">-->
+<!--        <field name="name">employee.transfer.list.search</field>-->
+<!--        <field name="model">employee.transfer</field>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <search string="Search Opportunities">-->
+<!--                <field name="name"/>-->
+<!--&lt;!&ndash;                <filter string="Include archived" name="archived"&ndash;&gt;-->
+<!--&lt;!&ndash;                        domain="['|', ('active', '=', True), ('active', '=', False)]"/>&ndash;&gt;-->
+<!--&lt;!&ndash;                <filter string="Actived" name="Actived"&ndash;&gt;-->
+<!--&lt;!&ndash;                        domain="['|',('state', '=', 'new'),('state', '=','offer_received'), '|', ('active', '=', True)]"/>&ndash;&gt;-->
+<!--                <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>-->
+<!--            </search>-->
+<!--        </field>-->
+<!--     </record>-->
+    <record id="employee_transfer_hr_inherit" model="ir.actions.act_window">
+        <field name="name">Transfer</field>
+        <field name="res_model">employee.transfer</field>
+        <field name="view_mode">list,form</field>
+    </record>
+  </data>
+</odoo>
+

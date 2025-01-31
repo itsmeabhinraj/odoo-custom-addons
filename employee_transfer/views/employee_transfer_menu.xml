@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+<!--    <menuitem id="test_menu_root" name="Employee transfer">-->
+<!--        <menuitem id="first_level_menu" name="Employee" action="employee_hr_inherit"/>-->
+<!--        <menuitem id="second_level_menu" name="Transfer" action="employee_transfer_hr_inherit"/>-->
+<!--    </menuitem>-->
+    <menuitem id="external_id_employee" name="Transfer" action="employee_transfer_hr_inherit" parent="hr.menu_hr_root"/>
+</odoo>

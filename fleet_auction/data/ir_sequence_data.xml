@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo noupdate="1">
+
+    <record id="seq_fleet_auction" model="ir.sequence">
+        <field name="name">Fleet Auction</field>
+        <field name="code">fleet.auction</field>
+        <field name="prefix">FA</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+    <record id="seq_bid_customer" model="ir.sequence">
+        <field name="name">Bid Name</field>
+        <field name="code">bid.seq</field>
+        <field name="prefix">BID</field>
+        <field name="padding">5</field>
+        <field name="company_id" eval="False"/>
+    </record>
+
+</odoo>

@@ -1,0 +1,46 @@
+# -*- coding: utf-8 -*-
+from odoo import fields, models, _, api
+
+
+class FleetBid(models.Model):
+    _name = 'fleet.bid'
+    _description = "fleet auction bid start here"
+    _rec_name = 'auction_id'
+
+    bid_id = fields.Char(string="Bid ref", readonly=True,
+                         default=lambda self: _('New Bid'))
+    auction_id = fields.Many2one('fleet.auction.auction',
+                                 required=True,
+                                 copy=False,
+                                 ondelete='cascade')
+    bid_amount = fields.Monetary(related='auction_id.start_price',
+                                 readonly='True')
+    bid_price = fields.Monetary('Bid Price')
+    bid_date = fields.Date('Bid Date')
+    phone = fields.Char('Phone')
+    states = fields.Selection(
+        string='States',
+        selection=[('draft', 'Draft'), ('confirmed', 'Confirmed')],
+        default='draft'
+    )
+    currency_id = fields.Many2one('res.currency', string="Currency",
+                                  default=lambda
+                                  self: self.env.user.company_id.currency_id.id)
+    bid_customer_id = fields.Many2one("res.partner", string="Customer")
+    user_id = fields.Many2one('res.users',
+                              string="Responsible",
+                              readonly=True,
+                              default=lambda self: self.env.user.id)
+    company_id = fields.Many2one('res.company', store=True,
+                                 copy=False, string="Company", readonly=True,
+                                 default=lambda self: self.env.company.id)
+
+
+    @api.model
+    def create(self, vals_list):
+        vals_list['bid_id'] = self.env['ir.sequence'].next_by_code('bid.seq')
+        return super().create(vals_list)
+
+    def bid_confirm(self):
+        """While Confirm button triggered state changes to Confirmed"""
+        self.states = 'confirmed'

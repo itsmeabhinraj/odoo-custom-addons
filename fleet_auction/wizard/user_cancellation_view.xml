@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+   <!-- Odoo View Definition for Whatsapp Message Form -->
+   <record id="auction_cancel_message_view_form" model="ir.ui.view">
+       <field name="name">auction.cancel.message.view.form</field>
+       <field name="model">user.cancellation.message</field>
+       <field name="priority" eval="8"/>
+       <field name="arch" type="xml">
+           <form string="Cancellation Message">
+               <group>
+                   <field name="reason"/>
+               </group>
+               <footer>
+                   <button name="function1" string="Done" class="btn-primary" type="object"/>
+                   <button name="cancel" string="Cancel" type="object"/>
+               </footer>
+           </form>
+       </field>
+   </record>
+</odoo>
+
+
+<!--<?xml version="1.0"?>-->
+<!--<odoo>-->
+<!--        <record id="auction_cancellation_user_form" model="ir.ui.view">-->
+<!--            <field name="name">auction.cancel.form</field>-->
+<!--            <field name="model">user.cancellation.message</field>-->
+<!--            <field name="arch" type="xml">-->
+<!--                <form string="auction cancel">-->
+<!--&lt;!&ndash;                    <field name="lead_ids" invisible="1"></field>&ndash;&gt;-->
+<!--                    <group>-->
+<!--&lt;!&ndash;                        <field name="lost_reason_id" options="{'no_create_edit': True}" />&ndash;&gt;-->
+<!--                        <field name="reason" placeholder="What went wrong?"/>-->
+<!--                    </group>-->
+<!--                    <footer>-->
+<!--&lt;!&ndash;                        button to done  &ndash;&gt;-->
+<!--                        <button name="function1" string="Done" type="object" class="btn-primary" data-hotkey="q"/>-->
+<!--                        <button string="Cancel" class="btn-secondary" special="cancel" data-hotkey="x"/>-->
+<!--                    </footer>-->
+<!--                </form>-->
+<!--            </field>-->
+<!--        </record>-->
+
+<!--        <record id="auction_cancel_user_action" model="ir.actions.act_window">-->
+<!--            <field name="name">Auction Cancel</field>-->
+<!--            <field name="res_model">user.cancellation.message</field>-->
+<!--            <field name="view_mode">form</field>-->
+<!--            <field name="view_id" ref="auction_cancellation_user_form"/>-->
+<!--            <field name="target">new</field>-->
+<!--&lt;!&ndash;            <field name="binding_model_id" ref="crm.model_crm_lead"/>&ndash;&gt;-->
+<!--&lt;!&ndash;            <field name="context">{&ndash;&gt;-->
+<!--&lt;!&ndash;                'default_auction_id' : {{obj.}},&ndash;&gt;-->
+<!--&lt;!&ndash;            }</field>&ndash;&gt;-->
+<!--        </record>-->
+<!--</odoo>-->

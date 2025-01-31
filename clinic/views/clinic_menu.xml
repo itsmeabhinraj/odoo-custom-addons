@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem id="test_menu_root" name="Clinic">
+        <menuitem id="test_first_level_menu" name="Patient">
+            <menuitem id="reg_pat" name="Registration" action="patient_reg_action"/>
+        </menuitem>
+        <menuitem id="test_second_level_menu" name="OP">
+            <menuitem id="op_pat" name="OPTicket" action="patient_op_action"/>
+        </menuitem>
+        <menuitem id="test_third_level_menu" name="Consultant" action="patient_consult_action"/>
+    </menuitem>
+</odoo>
