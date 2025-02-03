@@ -199,7 +199,7 @@ class FleetAuctionAuction(models.Model):
         return {
             'type': 'ir.actions.act_window',
             'name': 'Invoice',
-            'view_mode': 'list',
+            'view_mode': 'list,form',
             'res_model': 'account.move',
             'domain': [('auction_id', '=', self.id)],
             'context': "{'create':False}"

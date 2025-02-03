@@ -43,12 +43,7 @@ class AccountMove(models.Model):
         # if invoice_line_lines:
         #     self.update({'invoice_line_ids': invoice_line_lines})
 
-    def action_post(self):@api.depends('line_ids.sale_line_ids', 'related_so_ids')
-    def _compute_origin_so_count(self):
-        for move in self:
-            move.sale_order_count = (len(move.line_ids.sale_line_ids.order_id) +
-                                     len(move.related_so_ids.order_line))
-            print('salecount', move.sale_order_count)
+    def action_post(self):
         ''' status of the selected sale order changed to invoiced stage'''
         self.related_so_ids.invoice_status = 'invoiced'
         super().action_post()
