@@ -91,3 +91,49 @@ def action_view_invoice(self):
     action["domain"] = [("id", "in", self.invoice_ids.ids)]
     return action
 
+#
+#
+def action_view_related_invoices(self):
+    '''Action to view related invoices'''
+    self.ensure_one()
+    # Find invoices created through normal workflow
+    normal_invoices = self.env['account.move'].search([
+        ('invoice_origin', '=', self.name)
+    ])
+    # Find invoices where this Sale Order is in related_so_ids
+    related_invoices = self.env['account.move'].search([
+        ('related_so_ids', 'in', self.id)
+    ])
+    # Combine both
+    invoices = normal_invoices | related_invoices
+    return {
+        'name': 'Related Invoices',
+        'type': 'ir.actions.act_window',
+        'view_mode': 'tree,form',
+        'res_model': 'account.move',
+        'domain': [('id', 'in', invoices.ids)],
+        'context': {'create': False},
+    }
+
+
+<record id="sale_order_form_inherit" model="ir.ui.view">
+    <field name="name">sale.order.form.inherit</field>
+    <field name="model">sale.order</field>
+    <field name="inherit_id" ref="sale.view_order_form"/>
+    <field name="arch" type="xml">
+        <!-- Add smart button for related Invoices -->
+        <xpath expr="//sheet" position="inside">
+            <div class="oe_button_box" name="button_box">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_related_invoices"
+                    icon="fa-file-invoice"
+                    string="Related Invoices"
+                    attrs="{'invisible': [('invoice_count', '=', 0)]}">
+                    <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                </button>
+            </div>
+        </xpath>
+    </field>
+</record>

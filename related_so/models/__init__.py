@@ -1,2 +1,2 @@
-from . import related_so
+from . import account_move
 from . import sale_order

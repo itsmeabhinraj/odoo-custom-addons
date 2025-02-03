@@ -1,9 +1,10 @@
-from email.policy import default
-
-from cffi.model import qualify
-from lxml.html import find_rel_links
+# from email.policy import default
+#
+# from cffi.model import qualify
+# from lxml.html import find_rel_links
 
 from odoo import api, fields, models, Command
+
 
 class AccountMove(models.Model):
     '''inheriting the invoice here and add additional field related so.
@@ -12,39 +13,42 @@ class AccountMove(models.Model):
 
     _inherit = 'account.move'
 
-    related_so_ids = fields.Many2many('sale.order',string='Related SO')
-    so_invoiced_count = fields.Integer('Count',default=0)
-    sale_name = fields.Char('sale ref')
-    find_rel_sale_order = fields.Integer(compute='_compute_origin_so_count',string='relate so count')
-
-
-
-    @api.depends('line_ids.sale_line_ids','related_so_ids')
-    def _compute_origin_so_count(self):
-        for move in self:
-            move.sale_order_count = len(move.line_ids.sale_line_ids.order_id) + len(move.related_so_ids.order_line)
-            print('salecount',move.sale_order_count)
+    related_so_ids = fields.Many2many('sale.order', string='Related SO')
+    so_invoiced_count = fields.Integer('Count', default=0)
+    find_rel_sale_order = fields.Integer(compute='_compute_origin_so_count',
+                                         string='relate so count')
 
 
     @api.onchange('related_so_ids')
     def related_fuction(self):
         print(self)
+        # self.invoice_line_ids = [fields.Command.clear()]
+        # invoice_line_lines = []
         for sale_order in self.related_so_ids:
-            print('sale order',sale_order)
-            sale_order.write({'invoice_id': self.id})
+            print('sale order', sale_order)
+            # adding into a list
             for order_line in sale_order.order_line:
-                print('order_line',order_line)
+                print('order_line', order_line)
                 invoice_line_vals = {
-                    'product_id':order_line.product_id.id,
-                    'quantity':order_line.product_uom_qty,
-                    'price_unit':order_line.price_unit,
-                    'tax_ids':order_line.tax_id,
-                    'price_subtotal':order_line.price_subtotal,
+                    'product_id': order_line.product_id.id,
+                    'quantity': order_line.product_uom_qty,
+                    'price_unit': order_line.price_unit,
+                    'tax_ids': order_line.tax_id,
+                    'price_subtotal': order_line.price_subtotal,
                 }
-                print('product',order_line.product_id.id)
-                self.update({'invoice_line_ids': [Command.create(invoice_line_vals)]})
+                print('product', order_line.product_id.id)
+                self.update(
+                    {'invoice_line_ids': [Command.create(invoice_line_vals)]})
+                # invoice_line_lines.append(fields.Command.create(invoice_line_vals))
+        # if invoice_line_lines:
+        #     self.update({'invoice_line_ids': invoice_line_lines})
 
-    def action_post(self):
+    def action_post(self):@api.depends('line_ids.sale_line_ids', 'related_so_ids')
+    def _compute_origin_so_count(self):
+        for move in self:
+            move.sale_order_count = (len(move.line_ids.sale_line_ids.order_id) +
+                                     len(move.related_so_ids.order_line))
+            print('salecount', move.sale_order_count)
         ''' status of the selected sale order changed to invoiced stage'''
         self.related_so_ids.invoice_status = 'invoiced'
         super().action_post()
@@ -58,6 +62,15 @@ class AccountMove(models.Model):
         print('demo')
         print(self.find_sale_order)
 
+    #  calculate the number of  sale orders for the smart button
+    @api.depends('line_ids.sale_line_ids', 'related_so_ids')
+    def _compute_origin_so_count(self):
+        for move in self:
+            move.sale_order_count = (len(move.line_ids.sale_line_ids.order_id) +
+                                     len(move.related_so_ids.order_line))
+            print('salecount', move.sale_order_count)
+
+    # smart button views function
     def action_view_source_sale_orders(self):
         '''viewing the sale order smart button.
         Merge normal sale order and related so into this smart btn through this
@@ -69,13 +82,33 @@ class AccountMove(models.Model):
             'type': 'ir.actions.act_window',
             'view_mode': 'list,form',
             'res_model': 'sale.order',
-            'domain': [('id', 'in', (self.related_so_ids.ids + source_orders.ids))],
+            'domain': [
+                ('id', 'in', (self.related_so_ids.ids + source_orders.ids))],
             'context': {'create': False},
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         # super().action_view_source_sale_orders()
-
-
-
 
         # print(self.price_subtotal.id)
 
@@ -114,8 +147,6 @@ class AccountMove(models.Model):
         #                    ('invoice_status', '=', 'invoiced')],
         #         'context': "{'create':False}"
         #     }
-
-
 
         # func_value = super().action_view_source_sale_orders()
         # print('hey',func_value)

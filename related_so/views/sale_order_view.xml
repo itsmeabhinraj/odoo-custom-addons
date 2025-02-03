@@ -1,24 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<odoo>-->
+<!--    <record id="sale_order_customizations_form" model="ir.ui.view">-->
+<!--        <field name="name">sale.order.form.inherit</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--&lt;!&ndash;            <xpath expr="//button[@name='action_view_invoice']" position="after">&ndash;&gt;-->
+<!--&lt;!&ndash;                <button name="_compute_invoices_count"&ndash;&gt;-->
+<!--&lt;!&ndash;                        type="object"&ndash;&gt;-->
+<!--&lt;!&ndash;                        class="oe_stat_button"&ndash;&gt;-->
+<!--&lt;!&ndash;                        icon="fa-pencil-square-o">&ndash;&gt;-->
+<!--&lt;!&ndash;                </button>&ndash;&gt;-->
+<!--&lt;!&ndash;            </xpath>&ndash;&gt;-->
+<!--        </field>-->
+<!--    </record>-->
+<!--    <record id="sale_inherit" model="ir.actions.act_window">-->
+<!--        <field name="name">name</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">list,form</field>-->
+<!--    </record>-->
+<!--</odoo>-->
+
+<!--       old code -->
+<!--<odoo>-->
+<!--    <record id="sale_order_customizations_form" model="ir.ui.view">-->
+<!--        <field name="name">sale.order.form.inherit</field>-->
+<!--        <field name="model">sale.order</field>-->
+<!--        <field name="inherit_id" ref="sale.view_order_form"/>-->
+<!--        <field name="arch" type="xml">-->
+<!--            <xpath expr="//div[@name='button_box']" position="inside">-->
+<!--                <button name="action_view_invoice"-->
+<!--                        type="object"-->
+<!--                        class="oe_stat_button"-->
+<!--                        icon="fa-pencil-square-o"-->
+<!--                        invisible="invoice_count == 0"-->
+<!--                        domain="[('invoice_ids','=',related_so_ids.invoice_ids)]">-->
+<!--&lt;!&ndash;                    <field name="invoice_count"/>&ndash;&gt;-->
+<!--                <div class="o_stat_info">-->
+<!--                    <span class="o_stat_text">Invoice</span>-->
+<!--                </div>-->
+<!--                    <field name="invoice_count" widget="statinfo" string="Invoices"/>-->
+<!--                </button>-->
+<!--            </xpath>-->
+<!--        </field>-->
+<!--    </record>-->
+<!--   <record id="sale_inherit" model="ir.actions.act_window">-->
+<!--        <field name="name">name</field>-->
+<!--        <field name="res_model">sale.order</field>-->
+<!--        <field name="view_mode">list,form</field>-->
+<!--    </record>-->
+<!--</odoo>-->
+
+
+<!--        code genertated a -->
 <odoo>
     <record id="sale_order_customizations_form" model="ir.ui.view">
         <field name="name">sale.order.form.inherit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@name='button_box']" position="inside">
-                <button name="action_view_invoice"
-                        type="object"
-                        class="oe_stat_button"
-                        icon="fa-pencil-square-o"
-                        invisible="invoice_count == 0"
-                        domain="[('invoice_ids','=',related_so_ids.invoice_ids)]">
-<!--                    <field name="invoice_count"/>-->
-                <div class="o_stat_info">
-                    <span class="o_stat_text">Invoice</span>
-                </div>
+             <xpath expr="//sheet" position="inside">
+            <div class="oe_button_box" name="button_box">
+                <button
+                    class="oe_stat_button"
+                    type="object"
+                    name="action_view_related_invoices"
+                    icon="fa-file-invoice"
+                    string="Related Invoices"
+                    attrs="{'invisible': [('invoice_count', '=', 0)]}">
                     <field name="invoice_count" widget="statinfo" string="Invoices"/>
                 </button>
-            </xpath>
+            </div>
+        </xpath>
         </field>
     </record>
    <record id="sale_inherit" model="ir.actions.act_window">
@@ -27,3 +80,7 @@
         <field name="view_mode">list,form</field>
     </record>
 </odoo>
+
+
+
+

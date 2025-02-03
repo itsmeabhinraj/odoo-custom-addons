@@ -1,14 +1,106 @@
 from odoo import api,fields, models
-# hello abinnnn
 
 class SaleOrder(models.Model):
     _inherit = 'sale.order'
 
-    invoice_ids = fields.Many2many(string="Invoices",comodel_name='account.move',compute='_compute_invoices')
-    invoice_count = fields.Integer(string="Invoice Count",compute='_compute_invoices')
+    invoice_ids = fields.Many2many('account.move')
+    invoice_count = fields.Integer(string="Invoice Count",compute='_compute_invoices_count')
     invoice_id = fields.Many2one('account.move')
     invoices = fields.Char()
-    related_so_ids = fields.Many2many('account.move')
+    # related_so_ids = fields.Many2many('account.move')
+
+    #  final code
+
+    def action_view_invoice(self,invoices=False):
+        self.ensure_one()
+        normal_invoices = self.env['account.move'].search([
+            ('invoice_origin', '=', self.name)
+        ])
+        # print('normal_invoices',nor`mal_invoices)
+        related_invoices = self.env['account.move'].search([
+            ('related_so_ids', 'in', self.id)
+        ])
+        # print(related_invoices)
+        # print('invoices',invoices)
+        return {
+            'name': 'Related Invoices',
+            'type': 'ir.actions.act_window',
+            'view_mode': 'list, form',
+            'res_model': 'account.move',
+            'res_id': False,
+            # 'domain': [('id', 'in', invoices.ids)],
+            'domain': [('id', 'in', normal_invoices.ids + related_invoices.ids)],
+            'context': {'create': False},
+        }
+        super().action_view_invoice()
+
+    def _compute_invoices_count(self):
+        for record in self:
+            normal_invoices = self.env['account.move'].search([('invoice_origin','=',record.name)])
+            related_invoices = self.env['account.move'].search([('related_so_ids','in',record.id)])
+            record.invoice_count = len(normal_invoices | related_invoices)
+            print(normal_invoices)
+            print(related_invoices)
+            print(record.invoice_count)
+
+    # ###########################################################################333333
+
+
+
+
+
+
+
+
+
+
+
+    # def action_view_related_invoices(self):
+    #     '''Action to view related invoices'''
+    #     self.ensure_one()
+    #     normal_invoices = self.env['account.move'].search([
+    #         ('invoice_origin', '=', self.name)
+    #     ])
+    #     related_invoices = self.env['account.move'].search([
+    #         ('related_so_ids', 'in', self.id)
+    #     ])
+    #     return {
+    #         'name': 'Related Invoices',
+    #         'type': 'ir.actions.act_window',
+    #         'view_mode': 'list,form',
+    #         'res_model': 'account.move',
+    #         'res_id': False,
+    #         # 'domain': [('id', 'in', invoices.ids)],
+    #         'domain': [('id', 'in', normal_invoices.ids + related_invoices.ids)],
+    #         'context': {'create': False},
+    #     }
+
+
+
+
+            # invoices = order.order_line.invoice_lines.move_id.filtered(lambda r: r.move_type in ('out_invoice', 'out_refund'))
+            # print(invoices)
+            # related_invoices = order.invoice_id.related_so_ids.mapped("invoice_ids")
+            # # Combine invoices from the current SO and its related SOs
+            # order.invoice_ids = related_invoices
+            # order.invoice_count = len(order.invoice_ids)
+
+    # def action_view_invoice(self):
+    #    # '''invoice smart butn adding values'''
+    #      return {
+    #         'type': 'ir.actions.act_window',
+    #         'name': 'Invoice',
+    #         'view_mode': 'form',
+    #         'res_model': 'account.move',
+    #         'domain': [('related_so_ids', '=', self.id)],
+    #         'context': "{'create':False}",
+    #     }
+
+    # def action_view_invoice(self):
+    #     # invoices = self.mapped('invoice_ids')
+    #     print(self)
+
+
     #
     # @api.depends("order_line.move_ids", "related_so_ids")
     # def _compute_invoices(self):
@@ -45,35 +137,6 @@ class SaleOrder(models.Model):
     #            [("related_so_ids", '=', self.related_so_ids)])
     #        print(record.count_invoice)
     #        print("1001")
-
-    @api.depends("order_line.invoice_lines", "related_so_ids")
-    def _compute_invoices(self):
-        for order in self:
-            print('com imv',self)
-            print(self.invoice_ids.id)
-            # invoices = order.order_line.invoice_lines.move_id.filtered(lambda r: r.move_type in ('out_invoice', 'out_refund'))
-            # print(invoices)
-            related_invoices = order.invoice_id.related_so_ids.mapped("invoice_ids")
-            # Combine invoices from the current SO and its related SOs
-            order.invoice_ids = related_invoices
-            order.invoice_count = len(order.invoice_ids)
-
-    def action_view_invoice(self):
-       # '''invoice smart butn adding values'''
-         return {
-            'type': 'ir.actions.act_window',
-            'name': 'Invoice',
-            'view_mode': 'form',
-            'res_model': 'account.move',
-            'domain': [('related_so_ids', '=', self.id)],
-            'context': "{'create':False}",
-        }
-
-    # def action_view_invoice(self):
-    #     # invoices = self.mapped('invoice_ids')
-    #     print(self)
-
-
 
 
 
