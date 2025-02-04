@@ -16,6 +16,7 @@
         'data/ir_cron_data.xml',
         'data/ir_sequence_data.xml',
         'wizard/user_cancellation_view.xml',
+        'wizard/fleet_auction_wizard_view.xml',
         'views/fleet_invoice.xml',
         'views/fleet_expense_view.xml',
         'views/fleet_vehicle.xml',

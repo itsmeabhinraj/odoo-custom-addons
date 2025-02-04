@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record model="ir.actions.act_window" id="fleet_auction_report_wizard_action">
+            <field name="name">fleet auction report wizard</field>
+            <field name="res_model">fleet.auction.report</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="fleet_auction_report_wizard_view_form"/>
+            <field name="target">new</field>
+        </record>
+
+        <record id="fleet_auction_report_wizard_view_form" model="ir.ui.view">
+               <field name="name">fleet.auction.wizard.view.form</field>
+               <field name="model">fleet.auction.report</field>
+               <field name="priority" eval="8"/>
+               <field name="arch" type="xml">
+                   <form string="PDF Fleet Auction Report">
+                       <group>
+                           <field name="from_date"/>
+                           <field name="to_date"/>
+                           <field name="state"/>
+                           <field name="customer_id"/>
+                           <field name="responsible_id"/>
+                       </group>
+                       <footer>
+                           <button name="%(action_report_fleet_auction_report)d" string="PDF" class="btn-primary" type='action'/>
+                           <button name="cancel" string="Cancel" type="object"/>
+                       </footer>
+                   </form>
+               </field>
+        </record>
+    </data>
+</odoo>

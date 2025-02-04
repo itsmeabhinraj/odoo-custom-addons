@@ -7,9 +7,9 @@
                         <div class="text-center">
                             <h1>Fleet Auction</h1>
                         </div>
-                        <h3>Customer:
-                            <span t-field="o.name"/>
-                        </h3>
+<!--                        <h3>Customer:-->
+<!--                            <span t-field="o.name"/>-->
+<!--                        </h3>-->
                     </div>
                 </t>
             </t>

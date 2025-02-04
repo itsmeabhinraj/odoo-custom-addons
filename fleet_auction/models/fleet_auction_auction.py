@@ -80,6 +80,7 @@ class FleetAuctionAuction(models.Model):
         """Sequance code are created here.name is the sequance field name """
         vals_list['name'] = self.env['ir.sequence'].next_by_code(
             'fleet.auction')
+        print("sa",vals_list)
         return super().create(vals_list)
 
     @api.model

@@ -19,4 +19,3 @@ class FleetVehicle(models.Model):
         }
         create_vals = [dict(value)]
         return self.env['fleet.auction.auction'].create(create_vals)
-

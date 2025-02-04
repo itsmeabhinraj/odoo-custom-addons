@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-'''expense module- added corresponding fields here.total expense computed in
+'''expense module-added corresponding fields here.total expense computed in
  main module'''
+""""""
 from odoo import fields, models
 
 
