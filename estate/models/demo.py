@@ -1,28 +1,28 @@
-for sale_order in self.related_so_ids:
-            sale_order.write({'invoice_id': self.id})  # Link invoice to SO
-
-            for order_line in sale_order.order_line:
-
-invoice
-
-
-class SaleOrder(models.Model):
-    _inherit = 'sale.order'
-
-    invoice_id = fields.Many2one('account.move', string='Invoice', readonly=True)
-
-
-<xpath expr="//div[@name='button_box']" position="inside">
-            <button name="action_view_invoice"
-                    type="object"
-                    class="oe_stat_button"
-                    icon="fa-file-invoice">
-                <field name="invoice_id"/>
-                <div class="o_stat_info">
-                    <span class="o_stat_text">Invoice</span>
-                </div>
-            </button>
-        </xpath>
+# for sale_order in self.related_so_ids:
+#             sale_order.write({'invoice_id': self.id})  # Link invoice to SO
+#
+#             for order_line in sale_order.order_line:
+#
+# invoice
+#
+#
+# class SaleOrder(models.Model):
+#     _inherit = 'sale.order'
+#
+#     invoice_id = fields.Many2one('account.move', string='Invoice', readonly=True)
+#
+#
+# <xpath expr="//div[@name='button_box']" position="inside">
+#             <button name="action_view_invoice"
+#                     type="object"
+#                     class="oe_stat_button"
+#                     icon="fa-file-invoice">
+#                 <field name="invoice_id"/>
+#                 <div class="o_stat_info">
+#                     <span class="o_stat_text">Invoice</span>
+#                 </div>
+#             </button>
+#         </xpath>
 
 
 

@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
-'''FLeet auction module handles the auction of the vehicles and the customer bid
-y'''
+"""FLeet auction module handles the auction of the vehicles and the customer bid
+y"""
 from odoo import api, Command, fields, models, _
-# from odoo.api import readonly
 from odoo.exceptions import ValidationError, UserError
 
 
@@ -17,8 +16,8 @@ class FleetAuctionAuction(models.Model):
     vehicle_name = fields.Many2one("fleet.vehicle",
                                    required=True, copy=False)
     brand = fields.Char('Brand')
-    start_date = fields.Date("Start date",required=True)
-    end_date = fields.Date("End date",required=True)
+    start_date = fields.Date("Start date")
+    end_date = fields.Date("End date")
     active = fields.Boolean('Active', default=1)
     fleet_auction_state = fields.Selection(
         string='State',
@@ -29,26 +28,24 @@ class FleetAuctionAuction(models.Model):
                    ('canceled', 'Canceled')],
         default='draft'
     )
-    # image = fields.Image("Image")
     company_id = fields.Many2one('res.company', store=True,
-                                 copy=False, string="Company",readonly=True,
+                                 copy=False, string="Company", readonly=True,
                                  default=lambda self: self.env.company.id)
     currency_id = fields.Many2one('res.currency', string="Currency",
                                   default=lambda
                                       self: self.env.company.currency_id.id)
-    start_price = fields.Monetary('Start price', copy=False,required=True)
+    start_price = fields.Monetary('Start price', copy=False, required=True)
     won_price = fields.Monetary('Won price', copy=False)
     responsible_id = fields.Many2one('res.users', required=True,
                                      readonly=True,
-                                  string="Responsible",
-                                  default=lambda self: self.env.uid)
+                                     string="Responsible",
+                                     default=lambda self: self.env.uid)
     description = fields.Html("vehicle description")
     customer_id = fields.Many2one("res.partner", string="Customer")
-    # customer_id=fields.Many2one("fleet.bid",String="Customer")
     customer_phone = fields.Char(related='customer_id.phone')
     customer_email = fields.Char(related='customer_id.email')
-    street = fields.Char(related='customer_id.street',)
-    street2 = fields.Char(related='customer_id.street2',)
+    street = fields.Char(related='customer_id.street', )
+    street2 = fields.Char(related='customer_id.street2', )
     city = fields.Char(related='customer_id.city')
     state_id = fields.Many2one(related='customer_id.state_id')
     zip = fields.Char(related='customer_id.zip')
@@ -56,7 +53,7 @@ class FleetAuctionAuction(models.Model):
 
     bid_ids = fields.One2many("fleet.bid", "auction_id")
     confirm_bid_ids = fields.One2many("fleet.bid",
-                                       "auction_id",
+                                      "auction_id",
                                       compute="_compute_confirm_bids")
     best_bid = fields.Float(string="bid")
     same_bid = fields.Char(string="Auction_bid")
@@ -73,14 +70,13 @@ class FleetAuctionAuction(models.Model):
     invoice_id = fields.Many2one('account.move')
     status_invoice = fields.Selection(related='invoice_id.status_in_payment')
     count_invoice = fields.Integer('Invoice', compute="_compute_count_invoice")
-    # cancel_id = fields.One2many('user.cancellation.message','auction_id')
 
     @api.model
     def create(self, vals_list):
         """Sequance code are created here.name is the sequance field name """
         vals_list['name'] = self.env['ir.sequence'].next_by_code(
             'fleet.auction')
-        print("sa",vals_list)
+        print("sa", vals_list)
         return super().create(vals_list)
 
     @api.model
@@ -96,11 +92,10 @@ class FleetAuctionAuction(models.Model):
         """while Cancel auction button triggered state changes to canceled"""
         if self.fleet_auction_state == 'success':
             raise UserError('An error occured,Already auction success')
-        elif self.env.user.has_group('fleet_auction.group_fleet_manager'):
+        if self.env.user.has_group('fleet_auction.group_fleet_manager'):
             self.fleet_auction_state = 'canceled'
         else:
             print('user spotted')
-            # self.ensure_one()
             return {'type': 'ir.actions.act_window',
                     'name': _('Cancellation Message'),
                     'res_model': 'user.cancellation.message',
@@ -112,7 +107,8 @@ class FleetAuctionAuction(models.Model):
         """while End Auction button triggered state changed to success"""
         if self.bid_ids:
             self.fleet_auction_state = 'success'
-            sorted_value = self.bid_ids.sorted(lambda a: a.bid_price, reverse=True)
+            sorted_value = self.bid_ids.sorted(lambda a: a.bid_price,
+                                               reverse=True)
             print(sorted_value)
             self.won_price = sorted_value[0].bid_price
             self.customer_id = sorted_value[0].bid_customer_id
@@ -151,14 +147,12 @@ class FleetAuctionAuction(models.Model):
             'currency_id': self.currency_id.id,
             'auction_id': self.id,
             'invoice_line_ids': [
-                Command.create({'name': self.vehicle_name.name,
-                                'price_unit': self.won_price,
-                                })] + expense_record,
+                                    Command.create(
+                                        {'name': self.vehicle_name.name,
+                                         'price_unit': self.won_price,
+                                         })] + expense_record,
         }])
-        # invoice.invoice_ids.action_post()
-        # self.fleet_auction_state = 'invoiced'
 
-    # best_value = self.confirm_bid_ids
     @api.depends('bid_ids.states')
     def _compute_confirm_bids(self):
         """computing the confirmed state bid based on conditons and stores in
@@ -175,7 +169,6 @@ class FleetAuctionAuction(models.Model):
 
     def total_bid_count_action(self):
         '''bid smart button action name .viewing of smart tab'''
-        # self.ensure_one()
         return {
             'type': 'ir.actions.act_window',
             'name': 'Bids',
@@ -210,8 +203,7 @@ class FleetAuctionAuction(models.Model):
     def _compute_total_expense(self):
         """computing the totat expenses in the . each auction"""
         for record in self:
-            record.total_expense = sum(line.expense_amount for
-                                       line in record.expense_ids)
+            record.total_expense = sum(record.expense_ids.mapped('expense_amount'))
 
     def create_auction_auto(self):
         '''function for the auto scheduled action to start the auction on
@@ -220,8 +212,6 @@ class FleetAuctionAuction(models.Model):
         today = fields.Date.today()
         actions = self.search(
             [('fleet_auction_state', 'in', ['draft', 'confirmed'])])
-        # ,('start_date','<=','today'))])
-        # ('start_date','<=','today'),('end_date','>=','today'))])
         print(actions)
         for values in actions:
             print(values.start_date)
@@ -239,5 +229,3 @@ class FleetAuctionAuction(models.Model):
         for auction in self:
             template = self.env.ref('fleet_auction.confirmation_mail_template')
             template.send_mail(auction.id, force_send=True)
-            # print(auction)
-

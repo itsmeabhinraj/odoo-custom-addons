@@ -1,18 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_fleet_auction">
         <t t-call="web.html_container">
-            <t t-foreach="docs" t-as="o">
                 <t t-call="web.external_layout">
-                    <div class="page">
-                        <div class="text-center">
-                            <h1>Fleet Auction</h1>
+                    <t t-if="data"/>
+<!--                    <t t-esc="data"/>-->
+                        <div class="page">
+                            <div class="text-center">
+                                <h1>Auction</h1>
+                            </div>
+                             <table class="table table-bordered mt32">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center"><span>Customer</span></th>
+                                        <th class="text-center"><span>Bid amount</span></th>
+                                        <th class="text-center"><span>state</span></th>
+                                        <th class="text-center"><span>Vehicle name</span></th>
+                                        <th class="text-center"><span>Current value</span></th>
+                                        <th class="text-center"><span>won amount</span></th>
+                                        <th class="text-center"><span>bid_start_date</span></th>
+                                        <th class="text-center"><span>bid_end_date</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <t t-foreach="data" t-as="result">
+                                        <tr>
+                                            <td><span t-esc="result['customer_name']"/></td>
+                                            <td><span t-esc="result['bid_amount']"/></td>
+                                            <td><span t-esc="result['state']"></span></td>
+                                            <td><span t-esc="result['fleet_name']"></span></td>
+                                            <td><span t-esc="result['current_asset_value']"></span></td>
+                                            <td><span t-esc="result['won_amount']"></span></td>
+                                            <td><span t-esc="result['start_date']"></span></td>
+                                            <td><span t-esc="result['end_date']"></span></td>
+                                        </tr>
+                                    </t>
+                                </tbody>
+                            </table>
                         </div>
-<!--                        <h3>Customer:-->
-<!--                            <span t-field="o.name"/>-->
-<!--                        </h3>-->
-                    </div>
-                </t>
+                    </t>
             </t>
-        </t>
     </template>
 </odoo>
+
+<!--<odoo>-->
+<!--    <template id="report_fleet_auction">-->
+<!--        <t t-call="web.html_container">-->
+<!--            <t t-foreach="docs" t-as="o">-->
+<!--                <t t-set="company" t-value="res_company"/>-->
+<!--                <t t-call="web.external_layout">-->
+<!--                    <t t-if="data"/>-->
+<!--                        <div class="page">-->
+<!--                            <div class="text-center">-->
+<!--                                <h1>Fleet Auction</h1>-->
+<!--                            </div>-->
+<!--                             <table class="table table-bordered mt32">-->
+<!--                                <thead>-->
+<!--                                    <tr>-->
+<!--                                        <td><span t-field="o.id"/></td>&ndash;&gt;-->
+<!--                                    </tr>-->
+<!--                                </thead>-->
+<!--                             </table>-->
+
+
+<!--                            <table class="table table-bordered mt32">-->
+<!--                                <thead>-->
+<!--                                    <tr>-->
+<!--                                        <th class="text-center"><span>Customer</span></th>-->
+<!--                                        <th class="text-center"><span>Bid amount</span></th>-->
+<!--                                        <th class="text-center"><span>state</span></th>-->
+<!--                                        <th class="text-center"><span>Vehicle name</span></th>-->
+<!--                                        <th class="text-center"><span>Current value</span></th>-->
+<!--                                        <th class="text-center"><span>won amount</span></th>-->
+<!--                                        <th class="text-center"><span>bid_start_date</span></th>-->
+<!--                                        <th class="text-center"><span>bid_end_date</span></th>-->
+<!--                                    </tr>-->
+<!--                                </thead>-->
+<!--                                <tbody>-->
+<!--                                    <t t-foreach="data['reports']" t-as="result">-->
+<!--                                        <tr>-->
+<!--                                            <td><span t-esc="result"/></td>-->
+<!--&lt;!&ndash;                                            <td><span t-esc="result['bid_amount']"/></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <td><span t-esc="result['state']"></span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <td><span t-esc="result['fleet_name']"></span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <td><span t-esc="result['current_asset_value']"></span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <td><span t-esc="result['won_amount']"></span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <td><span t-esc="result['start_date']"></span></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                                            <td><span t-esc="result['end_date']"></span></td>&ndash;&gt;-->
+<!--                                        </tr>-->
+<!--                                    </t>-->
+<!--                                </tbody>-->
+<!--                            </table>-->
+<!--                        </div>-->
+<!--                </t>-->
+<!--            </t>-->
+<!--        </t>-->
+<!--    </template>-->
+<!--</odoo>-->

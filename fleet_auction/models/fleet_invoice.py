@@ -3,7 +3,6 @@ from odoo import fields, models
 
 
 class FleetInvoice(models.Model):
-    # _name = 'fleet.invoice'
     _inherit = 'account.move'
 
     auction_id = fields.Many2one('fleet.auction.auction')
@@ -13,6 +12,6 @@ class FleetInvoice(models.Model):
                    ('paid', 'Paid')],
         default='notpaid', readonly=True
     )
-
-    def action_post(self):
-        super().action_post()
+    #
+    # def action_post(self):
+    #     super().action_post()

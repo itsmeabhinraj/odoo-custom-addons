@@ -24,7 +24,7 @@
                            <field name="responsible_id"/>
                        </group>
                        <footer>
-                           <button name="%(action_report_fleet_auction_report)d" string="PDF" class="btn-primary" type='action'/>
+                           <button name="generate_pdf_report" string="PDF" class="btn-primary" type='object'/>
                            <button name="cancel" string="Cancel" type="object"/>
                        </footer>
                    </form>

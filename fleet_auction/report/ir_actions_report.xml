@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
         <record id="action_report_fleet_auction_report" model="ir.actions.report">
             <field name="name">Fleet Auction Report</field>
             <field name="model">fleet.auction.auction</field>
@@ -10,5 +9,4 @@
             <field name="binding_model_id" ref="fleet_auction.model_fleet_auction_auction"/>
             <field name="binding_type">report</field>
         </record>
-    </data>
 </odoo>
