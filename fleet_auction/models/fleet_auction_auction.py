@@ -71,6 +71,21 @@ class FleetAuctionAuction(models.Model):
     status_invoice = fields.Selection(related='invoice_id.status_in_payment')
     count_invoice = fields.Integer('Invoice', compute="_compute_count_invoice")
 
+    @api.depends('expense_ids.expense_amount')
+    def _compute_total_expense(self):
+        """computing the totat expenses in the . each auction"""
+        for record in self:
+            record.total_expense = sum(
+                record.expense_ids.mapped('expense_amount'))
+
+    @api.depends('bid_ids.states')
+    def _compute_confirm_bids(self):
+        """computing the confirmed state bid based on conditons and stores in
+        a one 2 many field"""
+        for record in self:
+            record.confirm_bid_ids = record.bid_ids.filtered(
+                lambda best_value: best_value.states == "confirmed")
+
     @api.model
     def create(self, vals_list):
         """Sequance code are created here.name is the sequance field name """
@@ -87,6 +102,15 @@ class FleetAuctionAuction(models.Model):
         for records in self:
             if records.start_date > records.end_date:
                 raise ValidationError(_("Date should be apply before end"))
+
+    def auction_confirm(self):
+        """While Confirm button triggered state changes to Confirmed"""
+        for records in self:
+            if records.start_price <= 0:
+                raise ValidationError(_("Enter a price here"))
+        if self.fleet_auction_state == 'canceled':
+            raise UserError("Error--- already canceled")
+        self.fleet_auction_state = 'confirmed'
 
     def auction_cancel(self):
         """while Cancel auction button triggered state changes to canceled"""
@@ -115,14 +139,6 @@ class FleetAuctionAuction(models.Model):
         else:
             raise UserError("Please add a bid")
 
-    def auction_confirm(self):
-        """While Confirm button triggered state changes to Confirmed"""
-        for records in self:
-            if records.start_price <= 0:
-                raise ValidationError(_("Enter a price here"))
-        if self.fleet_auction_state == 'canceled':
-            raise UserError("Error--- already canceled")
-        self.fleet_auction_state = 'confirmed'
 
     def auction_reset(self):
         """while Reset button triggerd state chnage back to draft form"""
@@ -153,13 +169,7 @@ class FleetAuctionAuction(models.Model):
                                          })] + expense_record,
         }])
 
-    @api.depends('bid_ids.states')
-    def _compute_confirm_bids(self):
-        """computing the confirmed state bid based on conditons and stores in
-        a one 2 many field"""
-        for record in self:
-            record.confirm_bid_ids = record.bid_ids.filtered(
-                lambda best_value: best_value.states == "confirmed")
+
 
     def _compute_bid_count(self):
         '''computing the count of bids.here i added total count bid_ids'''
@@ -199,11 +209,7 @@ class FleetAuctionAuction(models.Model):
             'context': "{'create':False}"
         }
 
-    @api.depends('expense_ids.expense_amount')
-    def _compute_total_expense(self):
-        """computing the totat expenses in the . each auction"""
-        for record in self:
-            record.total_expense = sum(record.expense_ids.mapped('expense_amount'))
+
 
     def create_auction_auto(self):
         '''function for the auto scheduled action to start the auction on

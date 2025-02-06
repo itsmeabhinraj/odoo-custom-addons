@@ -8,7 +8,7 @@
                 <field name="name"/>
                 <field name="vehicle_name"/>
                 <field name="start_date"/>
-                <!--                    auctions ending today highlighted in a yellow shade in the list view-->
+                <!-- auctions ending today highlighted in a yellow shade in the list view-->
                 <field name="end_date"
                        decoration-warning="end_date &lt; today and active == True"/>
                 <field name="fleet_auction_state"/>
@@ -41,25 +41,13 @@
                             groups="fleet_auction.group_fleet_manager,fleet_auction.group_fleet_user"
                             invisible="fleet_auction_state in
                             ('canceled', 'success','invoiced')"/>
-
-                    <!--                     cancellation method calling directle from user_cancellation view xml  -->
-
-                    <!--                    <button name="fleet_auction.auction_cancel_user_action" type="action"-->
-                    <!--                            string="Cancel Auction"-->
-                    <!--                            groups="fleet_auction.group_fleet_user"-->
-                    <!--                            invisible="fleet_auction_state in-->
-                    <!--                            ('canceled', 'success','invoiced')"/>-->
-<!--                    auction_cancel_user_action-->
                     <button name="create_invoice" type="object"
                             class="btn-primary" string="Create Invoice"
                             groups="fleet_auction.group_fleet_manager"
                             invisible="fleet_auction_state not in ('success')"/>
-                    <!--      btn click it invisible -       invisible="invoice_id"/>-->
-                    <!--             invisible="fleet_auction_state not in ('success')"/>-->
                     <button name="auction_reset" type="object" string="Reset"
                             groups="fleet_auction.group_fleet_manager"
                             invisible="fleet_auction_state not in ('canceled','success','invoiced')"/>
-                    <!--                    demo buton-->
                     <button name="send_confirmation" type="object"
                             string="mail"
                             groups="fleet_aucCanceledtion.group_fleet_manager"/>
@@ -76,7 +64,7 @@
                     <widget name="web_ribbon" title="Paid"
                             bg_color="text-bg-success"
                             invisible="status_invoice not in ('paid')"/>
-                    <!--                    smart button created here inside div-->
+                    <!-- smart button created here inside div-->
                     <div class="oe_button_box" name="button_box"
                          position="inside">
                         <button class="oe_stat_button" type="object"
@@ -98,11 +86,6 @@
                             </div>
                         </button>
                     </div>
-
-
-                    <!--                    <widget name="web_ribbon" title="Sold" bg_color="text-bg-success"-->
-                    <!--                    invisible="sale_status != 'sold'"/>-->
-
                     <div class="oe_title">
                         <h1>
                             <field name="name" readonly="1"/>
@@ -201,7 +184,7 @@
                 <filter string="Draft" name="fleet_auction_state"/>
                 <!--                   defualt filter applied as draft -->
                 <!--                   <filter string="Draft" name="fleet_auhatttion_state_default"-->
-                    <!--                            domain="[('fleet_auction_state', '=','draft')]"/>-->
+                <!--                            domain="[('fleet_auction_state', '=','draft')]"/>-->
                 <filter string="Ongoing" name="fleet_auction_state"
                         domain="[('fleet_auction_state', '=','ongoing')]"/>
                 <filter string="Confirmed" name="fleet_auction_state"
@@ -231,36 +214,3 @@
         </field>
     </record>
 </odoo>
-
-
-        <!--      smART BUTTONS  -->
-        <!--    <record id="fleet_auction_view_smart_btn" model="ir.ui.view">-->
-        <!--        z<field name="name">fleet.auction.smart</field>-->
-        <!--        <field name="model">fleet.auction.auction</field>-->
-        <!--        <field name="inherit_id"></field>-->
-
-        <!--    </record>-->
-
-
-        <!--                address with contact     -->
-        <!--                    <field name="customer_id"-->
-        <!--                           widget="res_partner_many2one"-->
-        <!--                           context="{'res_partner_search_mode': 'customer', 'show_address': 1, 'show_vat': True}" invisible="not fleet_auction_state == 'success'"/>-->
-
-        <!--invisible="fleet_auction_state == 'canceled' or fleet_auction_state == 'success"/>-->
-
-
-        <!--            <widget name="web_ribbon" title="Archived" bg_color="text-bg-danger"-->
-        <!--                    invisible="[('active_status', '=', True)]"/>-->
-
-
-        <!--<div class="oe_button_box" name="button_box">-->
-        <!--                            <button name="action_schedule_meeting" type="object"-->
-        <!--                                class="oe_stat_button" icon="fa-calendar"-->
-        <!--                                context="{'partner_id': partner_id}"-->
-        <!--                                invisible="not id or type == 'lead'">-->
-        <!--                                <div class="o_stat_info">-->
-        <!--                                    <span class="o_stat_text"><field name="meeting_display_label"/></span>-->
-        <!--                                    <field name="meeting_display_date" class="o_stat_value" invisible="not meeting_display_date"/>-->
-        <!--                                </div>-->
-        <!--                            </button>-->

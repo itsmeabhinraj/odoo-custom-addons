@@ -9,7 +9,7 @@
         <field name="name">list view</field>
         <field name="model">fleet.bid</field>
         <field name="arch" type="xml">
-            <list string="list view" >
+            <list string="list view">
                 <field name="bid_id"/>
                 <field name="auction_id"/>
                 <field name="bid_customer_id"/>
@@ -33,7 +33,7 @@
                     <field name="states" widget="statusbar"
                            options="{'clickable':'1'}"
                            statusbar_visible="draft,confirmed"/>
-                    <!--                       groups="fleet_auction.group_fleet_manager"/>-->
+<!--                           groups="fleet_auction.group_fleet_manager"/>-->
                 </header>
                 <sheet>
                     <div class="oe_title">

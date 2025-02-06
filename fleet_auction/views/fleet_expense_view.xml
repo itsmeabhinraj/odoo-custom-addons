@@ -15,9 +15,6 @@
                 <field name="expense_amount" sum="Total"/>
             </list>
         </field>
-<!--        <group class="oe_subtotal_footer">-->
-<!--             <field name="expense_amount" nolabel="1" readonly="1"/>-->
-<!--        </group>-->
     </record>
     <record id="fleet_expense_view_form" model="ir.ui.view">
         <field name="name">fleet.auction.expense.form</field>
@@ -27,7 +24,8 @@
                 <sheet>
                     <group>
                         <field name="auction_id"/>
-                        <field name="name" placeholder="write the Expense name"/>
+                        <field name="name"
+                               placeholder="write the Expense name"/>
                         <field name="expense_amount" sum="Total"/>
                     </group>
                 </sheet>

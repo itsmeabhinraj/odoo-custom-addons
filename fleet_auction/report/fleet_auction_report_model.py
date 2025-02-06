@@ -6,8 +6,6 @@ class FleetAuctionReportModel(models.AbstractModel):
     @api.model
     def _get_report_values(self, docids, data=None):
         docs = self.env['fleet.auction.auction'].browse(docids)
-        print('docs',docs)
-        print(data['reports'])
         return {
             'doc_ids': docids,
             'doc_model': 'fleet.auction.auction',

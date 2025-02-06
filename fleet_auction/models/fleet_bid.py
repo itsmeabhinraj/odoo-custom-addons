@@ -34,7 +34,7 @@ class FleetBid(models.Model):
     company_id = fields.Many2one('res.company', store=True,
                                  copy=False, string="Company", readonly=True,
                                  default=lambda self: self.env.company.id)
-
+    fleet_auction_state= fields.Selection(related='auction_id.fleet_auction_state')
 
     @api.model
     def create(self, vals_list):

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_fleet_auction">
+        <t t-call="web.html_container">
+                <t t-call="web.external_layout">
+                    <t t-if="data"/>
+                        <div class="page">
+                            <div class="justify-content-between">
+                                <div style="text-align: right;">
+                                    <p><strong><t t-esc="user.name"></t></strong></p>
+                                    <p><strong><t t-esc="context_timestamp(datetime.datetime.now()).strftime('%m/%d/%Y')"></t></strong></p>
+                                </div>
+                            </div>
+                            <div class="text-center">
+                                <h1 style="text-align: left;">Fleet Auction</h1>
+                            </div>
+                            <t t-set="same_vehicle" t-value="set(result['fleet_name'] for result in data)"/>
+                            <t t-if="len(same_vehicle)==1">
+                                    <p><strong>Vehicle :</strong><t t-esc="list(same_vehicle)[0]"/></p>
+                            </t>
+                            <div>
+                                <div>
+                                     <table class="table table-bordered mt32">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-center"><span><strong>Customer</strong></span></th>
+                                                <th class="text-center"><span><strong>Bid amount</strong></span></th>
+                                                <t t-if="len(same_vehicle)>1">
+                                                    <th class="text-center"><span><strong>Vehicle name</strong></span></th>
+                                                </t>
+                                                <th class="text-center"><span><strong>Current value</strong></span></th>
+                                                <th class="text-center"><span><strong>Won amount</strong></span></th>
+                                                <th class="text-center"><span><strong>Bid Start Date</strong></span></th>
+                                                <th class="text-center"><span><strong>Bid End Date</strong></span></th>
+                                                <th class="text-center"><span><strong>Status</strong></span></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <t t-foreach="data" t-as="result">
+                                                <tr>
+                                                    <td style="text-align: center;"><span t-esc="result['customer_name']"/></td>
+                                                    <td style="text-align: right;"><span t-esc="result['bid_amount']"/></td>
+                                                    <t t-if="len(same_vehicle)>1">
+                                                        <td><span t-esc="result['fleet_name']"></span></td>
+                                                    </t>
+                                                    <td style="text-align: right;"><span t-esc="result['current_asset_value']"></span></td>
+                                                    <td style="text-align: right"><span t-esc="result['won_amount']"></span></td>
+                                                    <td><span t-esc="result['start_date']"></span></td>
+                                                    <td><span t-esc="result['end_date']"></span></td>
+                                                    <td><span t-esc="state.get(result['state'])"></span></td>
+                                                </tr>
+                                            </t>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                </t>
+        </t>
+
+    </template>
+</odoo>

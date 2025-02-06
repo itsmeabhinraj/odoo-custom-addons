@@ -41,16 +41,16 @@ def action_view_invoice(self):
 
 
 
-action_view_related_sales_orders(self):
-        """ Open the related sale orders in a list and form view from the smart button. """
-        return {
-            'name': 'Related Sales Orders',
-            'type': 'ir.actions.act_window',
-            'view_mode': 'tree,form',
-            'res_model': 'sale.order',
-            'domain': [('id', 'in', self.related_so_ids.ids)],
-            'context': {'create': False},
-        }
+# action_view_related_sales_orders(self):
+#         """ Open the related sale orders in a list and form view from the smart button. """
+#         return {
+#             'name': 'Related Sales Orders',
+#             'type': 'ir.actions.act_window',
+#             'view_mode': 'tree,form',
+#             'res_model': 'sale.order',
+#             'domain': [('id', 'in', self.related_so_ids.ids)],
+#             'context': {'create': False},
+#         }
 
 
 
@@ -115,25 +115,25 @@ def action_view_related_invoices(self):
         'context': {'create': False},
     }
 
-
-<record id="sale_order_form_inherit" model="ir.ui.view">
-    <field name="name">sale.order.form.inherit</field>
-    <field name="model">sale.order</field>
-    <field name="inherit_id" ref="sale.view_order_form"/>
-    <field name="arch" type="xml">
-        <!-- Add smart button for related Invoices -->
-        <xpath expr="//sheet" position="inside">
-            <div class="oe_button_box" name="button_box">
-                <button
-                    class="oe_stat_button"
-                    type="object"
-                    name="action_view_related_invoices"
-                    icon="fa-file-invoice"
-                    string="Related Invoices"
-                    attrs="{'invisible': [('invoice_count', '=', 0)]}">
-                    <field name="invoice_count" widget="statinfo" string="Invoices"/>
-                </button>
-            </div>
-        </xpath>
-    </field>
-</record>
+#
+# <record id="sale_order_form_inherit" model="ir.ui.view">
+#     <field name="name">sale.order.form.inherit</field>
+#     <field name="model">sale.order</field>
+#     <field name="inherit_id" ref="sale.view_order_form"/>
+#     <field name="arch" type="xml">
+#         <!-- Add smart button for related Invoices -->
+#         <xpath expr="//sheet" position="inside">
+#             <div class="oe_button_box" name="button_box">
+#                 <button
+#                     class="oe_stat_button"
+#                     type="object"
+#                     name="action_view_related_invoices"
+#                     icon="fa-file-invoice"
+#                     string="Related Invoices"
+#                     attrs="{'invisible': [('invoice_count', '=', 0)]}">
+#                     <field name="invoice_count" widget="statinfo" string="Invoices"/>
+#                 </button>
+#             </div>
+#         </xpath>
+#     </field>
+# </record>

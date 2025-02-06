@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <data>
-
-        <record model="ir.actions.act_window" id="fleet_auction_report_wizard_action">
+        <record id="fleet_auction_report_wizard_action" model="ir.actions.act_window">
             <field name="name">fleet auction report wizard</field>
-            <field name="res_model">fleet.auction.report</field>
+            <field name="res_model">fleet.auction.report.wizard</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="fleet_auction_report_wizard_view_form"/>
             <field name="target">new</field>
@@ -12,7 +10,7 @@
 
         <record id="fleet_auction_report_wizard_view_form" model="ir.ui.view">
                <field name="name">fleet.auction.wizard.view.form</field>
-               <field name="model">fleet.auction.report</field>
+               <field name="model">fleet.auction.report.wizard</field>
                <field name="priority" eval="8"/>
                <field name="arch" type="xml">
                    <form string="PDF Fleet Auction Report">
@@ -30,5 +28,4 @@
                    </form>
                </field>
         </record>
-    </data>
 </odoo>

@@ -40,10 +40,11 @@
     <record id="group_user_visibile_rule" model="ir.rule">
         <field name="name">User visiblty of bids user</field>
         <field name="model_id" ref="model_fleet_bid"/>
+        <field name="perm_read" eval="True"/>
+        <field name="perm_create" eval="True"/>
         <field name="domain_force">[('states','=','confirmed')]</field>
         <field name="groups"
                eval="[Command.link(ref('fleet_auction.group_fleet_user'))]"/>
-        <field name="perm_read" eval="True"/>
-        <field name="perm_create" eval="True"/>
+
     </record>
 </odoo>

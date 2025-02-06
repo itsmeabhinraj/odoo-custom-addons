@@ -24,6 +24,6 @@
         'views/fleet_auction_view.xml',
         'views/fleet_auction_menu.xml',
         'report/ir_actions_report.xml',
-        'report/fleet_auction_report_pdf.xml',
+        'report/fleet_auction_report_template.xml',
     ]
 }

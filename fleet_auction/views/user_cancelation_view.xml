@@ -6,6 +6,5 @@
         <field name="arch" type="xml">
             <field name="reason"/>
         </field>
-
     </record>
 </odoo>

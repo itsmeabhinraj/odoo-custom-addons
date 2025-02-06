@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-    <menuitem id="test_menu_root" name="Fleet Auction">
-        <menuitem id="first_level_menu" name="Auction">
-            <menuitem id="submenu" name="Auction"
-                      action="fleet_auction_action"/>
-            <menuitem id="sub_menu" name="Expenses"
+    <menuitem id="fleet_auction_menu_root" name="Fleet Auction">
+        <menuitem id="fleet_auction_menu_auction" name="Auction">
+            <menuitem id="menu_auction" name="Auction"
                       action="fleet_auction_action"/>
         </menuitem>
-        <menuitem id="second_level_menu" name="Bid"
+
+        <menuitem id="fleet_auction_bid_menu" name="Bid"
                   action="fleet_bid_action"/>
-        <menuitem id="third-level-menu" name="Invoice"
+        <menuitem id="fleet_auction_invoice_menu" name="Invoice"
                   action="fleet_invoice_action"/>
-        <menuitem id="forth_level_menu" name="Reports">
-             <menuitem id="sub_menu" name="Expenses"
-                       action="fleet_auction_action"/>
+
+        <menuitem id="fleet_auction_report_menu" name="Reports">
             <menuitem id="report_menu" name="Fleet auction report"
-                       action="fleet_auction_report_wizard_action"/>
+                      action="fleet_auction_report_wizard_action"/>
         </menuitem>
-<!--         <menuitem id="report_menu" name="Fleet auction report"-->
-<!--                       action="wizard.fleet_auction_report_wizard_action" parent="forth_level_menu"/>-->
     </menuitem>
 
 </odoo>
-
