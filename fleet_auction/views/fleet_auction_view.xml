@@ -9,8 +9,7 @@
                 <field name="vehicle_name"/>
                 <field name="start_date"/>
                 <!-- auctions ending today highlighted in a yellow shade in the list view-->
-                <field name="end_date"
-                       decoration-warning="end_date &lt; today and active == True"/>
+                <field name="end_date" decoration-warning="end_date &lt; today and active == True"/>
                 <field name="fleet_auction_state"/>
                 <field name="currency_id"/>
                 <field name="start_price" sum="Total"/>
@@ -166,7 +165,6 @@
                         <field name="message_ids" widget="mail_thread"/>
                     </div>
                 </chatter>
-
             </form>
         </field>
     </record>
@@ -181,10 +179,9 @@
                 <field name="customer_id"/>
                 <filter string="Start date" name="start_date"
                         date="create_date"/>
-                <filter string="Draft" name="fleet_auction_state"/>
-                <!--                   defualt filter applied as draft -->
-                <!--                   <filter string="Draft" name="fleet_auhatttion_state_default"-->
-                <!--                            domain="[('fleet_auction_state', '=','draft')]"/>-->
+<!--               defualt filter applied as draft -->
+               <filter string="Draft" name="fleet_auction_state_default"
+                        domain="[('fleet_auction_state', '=','draft')]"/>
                 <filter string="Ongoing" name="fleet_auction_state"
                         domain="[('fleet_auction_state', '=','ongoing')]"/>
                 <filter string="Confirmed" name="fleet_auction_state"

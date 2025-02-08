@@ -24,8 +24,7 @@
                 <sheet>
                     <group>
                         <field name="auction_id"/>
-                        <field name="name"
-                               placeholder="write the Expense name"/>
+                        <field name="name" placeholder="write the Expense name"/>
                         <field name="expense_amount" sum="Total"/>
                     </group>
                 </sheet>

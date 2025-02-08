@@ -1,20 +1,39 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <menuitem id="fleet_auction_menu_root" name="Fleet Auction">
-        <menuitem id="fleet_auction_menu_auction" name="Auction">
-            <menuitem id="menu_auction" name="Auction"
-                      action="fleet_auction_action"/>
-        </menuitem>
+        <menuitem
+            id="fleet_auction_menu_root"
+            name="Fleet Auction"/>
 
-        <menuitem id="fleet_auction_bid_menu" name="Bid"
-                  action="fleet_bid_action"/>
-        <menuitem id="fleet_auction_invoice_menu" name="Invoice"
-                  action="fleet_invoice_action"/>
+        <menuitem
+            id="fleet_auction_menu_auction"
+            name="Auction"
+            parent="fleet_auction_menu_root"/>
 
-        <menuitem id="fleet_auction_report_menu" name="Reports">
-            <menuitem id="report_menu" name="Fleet auction report"
-                      action="fleet_auction_report_wizard_action"/>
-        </menuitem>
-    </menuitem>
+        <menuitem
+            id="menu_auction"
+            name="Auction"
+            parent="fleet_auction_menu_auction"
+            action="fleet_auction_action"/>
+        <menuitem
+            id="fleet_auction_bid_menu"
+            name="Bid"
+            parent="fleet_auction_menu_root"
+            action="fleet_bid_action"/>
 
+        <menuitem
+            id="fleet_auction_invoice_menu"
+            name="Invoice"
+            parent="fleet_auction_menu_root"
+            action="fleet_invoice_action"/>
+
+        <menuitem
+            id="fleet_auction_report_menu"
+            name="Reports"
+            parent="fleet_auction_menu_root"/>
+
+        <menuitem
+            id="report_menu"
+            name="Fleet auction report"
+            parent="fleet_auction_report_menu"
+            action="fleet_auction_report_wizard_action"/>
 </odoo>

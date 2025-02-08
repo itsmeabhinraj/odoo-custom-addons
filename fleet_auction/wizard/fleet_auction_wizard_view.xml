@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
         <record id="fleet_auction_report_wizard_action" model="ir.actions.act_window">
-            <field name="name">fleet auction report wizard</field>
+            <field name="name">fleet.auction.report.wizard</field>
             <field name="res_model">fleet.auction.report.wizard</field>
             <field name="view_mode">form</field>
             <field name="view_id" ref="fleet_auction_report_wizard_view_form"/>
@@ -23,6 +23,7 @@
                        </group>
                        <footer>
                            <button name="generate_pdf_report" string="PDF" class="btn-primary" type='object'/>
+                           <button name="generate_xls_report" string="XLS" class="btn-primary" type="object"/>
                            <button name="cancel" string="Cancel" type="object"/>
                        </footer>
                    </form>

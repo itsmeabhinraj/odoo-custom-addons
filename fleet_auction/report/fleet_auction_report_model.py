@@ -1,4 +1,5 @@
-from odoo import api,fields,models
+# -*- coding: utf-8 -*-
+from odoo import api, models
 
 class FleetAuctionReportModel(models.AbstractModel):
     _name = 'report.fleet_auction.report_fleet_auction'
@@ -12,4 +13,3 @@ class FleetAuctionReportModel(models.AbstractModel):
             'docs': docs,
             'data': data['reports'],
         }
-

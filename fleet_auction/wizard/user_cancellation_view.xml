@@ -10,7 +10,7 @@
                    <field name="reason"/>
                </group>
                <footer>
-                   <button name="function1" string="Done" class="btn-primary" type="object"/>
+                   <button name="cancelation_btn" string="Done" class="btn-primary" type="object"/>
                    <button name="cancel" string="Cancel" type="object"/>
                </footer>
            </form>

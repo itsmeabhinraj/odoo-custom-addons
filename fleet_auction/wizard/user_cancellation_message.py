@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from odoo import fields,models
 
 class UserCancellationMessage(models.TransientModel):
@@ -7,7 +8,7 @@ class UserCancellationMessage(models.TransientModel):
     auction_id = fields.Many2one('fleet.auction.auction')
     reason = fields.Text("Reason for cancelation",store=1)
 
-    def function1(self):
+    def cancelation_btn(self):
         print(self)
         record = self.env['fleet.auction.auction'].search([('fleet_auction_state','!=','canceled')])
         if record:
