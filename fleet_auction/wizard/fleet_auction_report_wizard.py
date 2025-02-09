@@ -128,34 +128,63 @@ class FleetAuctionReportWizard(models.TransientModel):
         reports = self.fetch_data_report()
         data = {
             'form_data': self.read()[0],
-            'state': dict(self.fields_get('   state').get('state').get('selection')),
+            'state': dict(self.fields_get('state').get('state').get('selection')),
             'reports': reports
         }
-        return self.env.ref('fleet_auction.action_report_fleet_auction_report').report_action(self, data=data)
+        return self.env.ref('fleet_auction.action_report_fleet_auction_pdf_report').report_action(self, data=data)
 
-    def generate_xls_report(self,response=None):
-        data=self.fetch_data_report()
+    def generate_xlsx_report(self):
+        reports = self.fetch_data_report()
+        data = {
+            'form_data': self.read()[0],
+            'state': dict(self.fields_get('state').get('state').get('selection')),
+            'reports': reports
+        }
+        return {
+            'type': 'ir.actions.report',
+            'data': {'model': 'fleet.auction.report.wizard',
+                     'options': json.dumps(data,default=json_default),
+                     'output_format': 'xlsx',
+                     'report_name': 'Fleet Auction Excel Report',
+                     },
+            'report_type': 'xlsx',
+        }
+    def get_xlsx_report(self,data,response):
+        reports=self.fetch_data_report()
         output = io.BytesIO()
         workbook = xlsxwriter.Workbook(output, {'in_memory': True})
-        sheet = workbook.add_worksheet()
+        sheet = workbook.add_worksheet('fleet')
         cell_format = workbook.add_format(
             {'font_size': '12px', 'align': 'center'})
         head = workbook.add_format(
             {'align': 'center', 'bold': True, 'font_size': '20px'})
         txt = workbook.add_format({'font_size': '10px', 'align': 'center'})
-        sheet.merge_range('B2:I3', 'EXCEL REPORT', head)
-        sheet.merge_range('A4:B4', 'Customer:', cell_format)
-        sheet.merge_range('C4:D4', data['product'], txt)
-        sheet.merge_range('A5:B5', 'Products', cell_format)
-        for i, product in enumerate(data['products'],
-                                    start=5):  # Start at row 6 for products
-            sheet.merge_range(f'C{i}:D{i}', product, txt)
+
+        sheet.merge_range('B2:I3', 'FLEET AUCTION REPORT', head)
+        # sheet.merge_range('A4:B4', 'Customer:', cell_format)
+        # sheet.merge_range('C4:D4', data['product'], txt)
+        # sheet.merge_range('A5:B5', 'Products', cell_format)
+        headers = ['Customer','b','b','4','5','6','7','8','9']
+        for col, header in enumerate(headers):
+                                    # start=5):  # Sxtart at row 6 for products
+            sheet.write(4,col,header,cell_format)
+        #     fill data row
+        for row, report in enumerate(reports,start=5):
+            sheet.write(row,0,report['customer_name'],txt)
+            sheet.write(row,1,report['customer_name'],txt)
+            sheet.write(row,2,report['customer_name'],txt)
+            sheet.write(row,3,report['customer_name'],txt)
+            sheet.write(row,4,report['customer_name'],txt)
+            sheet.write(row,5,report['customer_name'],txt)
+            sheet.write(row,6,report['customer_name'],txt)
+            sheet.write(row,7,report['customer_name'],txt)
+            sheet.write(row,8,report['customer_name'],txt)
         workbook.close()
         output.seek(0)
         response.stream.write(output.read())
         output.close()
 
-
+    # cancelation button in wizard
     def cancel(self):
         '''report generationg wizards cancel button'''
         return {'type': 'ir.actions.act_window_close'}

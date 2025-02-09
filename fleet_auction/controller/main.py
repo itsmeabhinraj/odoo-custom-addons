@@ -6,12 +6,13 @@ from odoo.tools import html_escape
 class XLSXReportController(http.Controller):
     @http.route('/xlsx_reports', type='http', auth='user',
                 csrf=False)
-    def get_report_xlsx(self, model, options, output_format, report_name,
-                        token='ads'):
+    def get_report_xlsx(self, model, options, output_format, report_name,token='ads'):
         """ Return data to python file passed from the javascript"""
         session_unique_id = request.session.uid
+        print('session uid',session_unique_id)
         report_object = request.env[model].with_user(session_unique_id)
         options = json.loads(options)
+        print('options',options)
         try:
             if output_format == 'xlsx':
                 response = request.make_response(
@@ -22,8 +23,8 @@ class XLSXReportController(http.Controller):
                              ]
                 )
                 report_object.get_xlsx_report(options, response)
-                response.set_cookie('fileToken', token)
-                return response
+            response.set_cookie('fileToken', token)
+            return response
         except Exception:
             error = {
                 'code': 200,
