@@ -44,7 +44,9 @@
                                                     <td><span t-esc="result['fleet_name']"></span></td>
                                                 </t>
                                                 <td style="text-align: right;"><span t-esc="result['current_asset_value']"></span></td>
-                                                <td style="text-align: right"><span t-esc="result['won_amount']"></span></td>
+                                                <t t-if="result['won_amount'] == result['bid_amount']">
+                                                    <td style="text-align: right"><span t-esc="result['won_amount']"></span></td>
+                                                </t>
                                                 <td><span t-esc="result['start_date']"></span></td>
                                                 <td><span t-esc="result['end_date']"></span></td>
                                                 <td><span t-esc="state.get(result['state'])"></span></td>

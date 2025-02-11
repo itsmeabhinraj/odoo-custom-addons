@@ -181,11 +181,9 @@ class FleetAuctionAuction(models.Model):
         today = fields.Date.today()
         actions = self.search([('fleet_auction_state', 'in', ['draft', 'confirmed'])])
         for values in actions:
-            if (values.fleet_auction_state == 'draft' and
-                    values.start_date <= today):
+            if (values.fleet_auction_state == 'draft' and values.start_date <= today):
                 values.fleet_auction_state = 'confirmed'
-            elif (values.fleet_auction_state == 'confirmed' and
-                  values.end_date < today):
+            elif (values.fleet_auction_state == 'confirmed' and values.end_date < today):
                 values.fleet_auction_state = 'success'
                 values.send_confirmation()
 

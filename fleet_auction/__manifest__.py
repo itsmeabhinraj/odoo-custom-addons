@@ -26,9 +26,9 @@
         'report/ir_actions_report.xml',
         'report/fleet_auction_report_template.xml',
     ],
-    'asset':{
+    'assets':{
         'web.assets_backend': [
-            '/fleet_auction/static/src/js/action_manager.js'
+            '/fleet_auction/static/src/js/**/*',
         ]   },
 
 }
