@@ -10,10 +10,8 @@ class FleetVehicle(models.Model):
     _inherit = 'fleet.vehicle'
 
     current_value = fields.Monetary("Current value", copy=False)
-    company_id = fields.Many2one('res.company', store=True, copy=False,
-                                 string="Company",
-                                 default=lambda
-                                     self: self.env.user.company_id.id)
+    company_id = fields.Many2one('res.company', copy=False,
+                                 string="Company",default=lambda self: self.env.user.company_id.id)
     currency_id = fields.Many2one('res.currency', string="Currency",
                                   default=lambda
                                       self: self.env.user.company_id.currency_id.id)
@@ -21,7 +19,7 @@ class FleetVehicle(models.Model):
     def add_auction(self):
         '''function for the auction button'''
         value = {
-            'vehicle_name': self.id,
+            'vehicle_name_id': self.id,
             'start_price': self.current_value,
         }
         create_vehicle_auction = [value]

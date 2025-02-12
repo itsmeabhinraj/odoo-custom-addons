@@ -7,7 +7,6 @@
             <field name="view_id" ref="fleet_auction_report_wizard_view_form"/>
             <field name="target">new</field>
         </record>
-
         <record id="fleet_auction_report_wizard_view_form" model="ir.ui.view">
                <field name="name">fleet.auction.wizard.view.form</field>
                <field name="model">fleet.auction.report.wizard</field>
@@ -22,8 +21,8 @@
                            <field name="responsible_id"/>
                        </group>
                        <footer>
-                           <button name="generate_pdf_report" string="PDF" class="btn-primary" type='object'/>
-                           <button name="generate_xlsx_report" string="XLS" class="btn-primary" type="object"/>
+                           <button name="action_generate_pdf_report" string="PDF" class="btn-primary" type='object'/>
+                           <button name="action_generate_xlsx_report" string="XLS" class="btn-primary" type="object"/>
                            <button name="action_cancel" string="Cancel" type="object"/>
                        </footer>
                    </form>

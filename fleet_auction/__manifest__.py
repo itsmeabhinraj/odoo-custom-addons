@@ -10,7 +10,7 @@
     'license': 'LGPL-3',
     'depends':['base','hr','mail','contacts','fleet','crm','account'],
     'data': [
-        'security/user_groups.xml',
+        'security/fleet_auction_groups.xml',
         'security/ir.model.access.csv',
         'data/mail_confirmation_data.xml',
         'data/ir_cron_data.xml',

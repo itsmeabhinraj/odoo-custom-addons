@@ -9,8 +9,7 @@ class FleetBid(models.Model):
     _rec_name = 'auction_id'
 
     bid_id = fields.Char(string="Bid ref", readonly=True,default=lambda self: _('New Bid'))
-    auction_id = fields.Many2one('fleet.auction.auction',required=True,copy=False,
-                                 ondelete='cascade')
+    auction_id = fields.Many2one('fleet.auction.auction',required=True,copy=False,ondelete='cascade')
     bid_amount = fields.Monetary(related='auction_id.start_price',readonly='True')
     bid_price = fields.Monetary('Bid Price')
     bid_date = fields.Date('Bid Date')
@@ -22,7 +21,7 @@ class FleetBid(models.Model):
     bid_customer_id = fields.Many2one("res.partner", string="Customer")
     user_id = fields.Many2one('res.users',string="Responsible",readonly=True,
                               default=lambda self: self.env.uid)
-    company_id = fields.Many2one('res.company', store=True,copy=False, string="Company",
+    company_id = fields.Many2one('res.company', copy=False, string="Company",
                                  readonly=True,default=lambda self: self.env.company.id)
     fleet_auction_state= fields.Selection(related='auction_id.fleet_auction_state')
 

@@ -6,7 +6,7 @@
         <field name="arch" type="xml">
             <list string="list view">
                 <field name="name"/>
-                <field name="vehicle_name"/>
+                <field name="vehicle_name_id"/>
                 <field name="start_date"/>
                 <!-- auctions ending today highlighted in a yellow shade in the list view-->
                 <field name="end_date" decoration-warning="end_date &lt; today and active == True"/>
@@ -58,16 +58,13 @@
                            groups="fleet_auction.group_fleet_user"
                            statusbar_visible="draft,ongoing,confirmed,success"/>
                 </header>
-
                 <sheet>
-                    <widget name="web_ribbon" title="Paid"
-                            bg_color="text-bg-success"
+                    <widget name="web_ribbon" title="Paid" bg_color="text-bg-success"
                             invisible="status_invoice not in ('paid')"/>
                     <!-- smart button created here inside div-->
-                    <div class="oe_button_box" name="button_box"
-                         position="inside">
-                        <button class="oe_stat_button" type="object"
-                                icon="fa fa-bank" name="total_bid_count_action">
+                    <div class="oe_button_box" name="button_box" position="inside">
+                        <button class="oe_stat_button" type="object" icon="fa fa-bank"
+                                name="action_total_bid_count_action">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="bid_count"/>
@@ -75,8 +72,7 @@
                                 <span class="o_stat_text">Bids</span>
                             </div>
                         </button>
-                        <button class="oe_stat_button" type="object"
-                                icon="fa fa-right" name="all_invoice_listed">
+                        <button class="oe_stat_button" type="object" icon="fa fa-right" name="all_invoice_listed">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="count_invoice"/>
@@ -92,7 +88,7 @@
                     </div>
                     <group>
                         <group>
-                            <field name="vehicle_name"/>
+                            <field name="vehicle_name_id"/>
                             <field name="brand"/>
                             <field name="start_date"/>
                             <field name="end_date"/>
@@ -157,6 +153,7 @@
                         </page>
                     </notebook>
                 </sheet>
+<!--                chatter adding  -->
                 <chatter>
                     <div class="oe_chatter">
                         <field name="message_follower_ids"
@@ -175,12 +172,12 @@
         <field name="arch" type="xml">
             <search string="Search Opportunities">
                 <field name="name"/>
-                <field name="vehicle_name"/>
+                <field name="vehicle_name_id"/>
                 <field name="customer_id"/>
                 <filter string="Start date" name="start_date"
                         date="create_date"/>
 <!--               defualt filter applied as draft -->
-               <filter string="Draft" name="fleet_auction_state_default"
+                <filter string="Draft" name="fleet_auction_state_default"
                         domain="[('fleet_auction_state', '=','draft')]"/>
                 <filter string="Ongoing" name="fleet_auction_state"
                         domain="[('fleet_auction_state', '=','ongoing')]"/>

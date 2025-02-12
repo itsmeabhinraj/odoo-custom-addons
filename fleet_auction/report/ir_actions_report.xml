@@ -9,13 +9,4 @@
             <field name="binding_model_id" ref="fleet_auction.model_fleet_auction_auction"/>
             <field name="binding_type">report</field>
         </record>
-<!--    <record id="action_report_fleet_auction_xlsx_report" model="ir.actions.report">-->
-<!--            <field name="name">Fleet Auction Report</field>-->
-<!--            <field name="model">fleet.auction.auction</field>-->
-<!--            <field name="report_type">xlsx</field>-->
-<!--            <field name="report_name">fleet_auction.report_fleet_auction</field>-->
-<!--            <field name="report_file">fleet_auction.report_fleet_auction</field>-->
-<!--            <field name="binding_model_id" ref="fleet_auction.model_fleet_auction_auction"/>-->
-<!--            <field name="binding_type">report</field>-->
-<!--        </record>-->
 </odoo>
