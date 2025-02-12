@@ -24,18 +24,18 @@
         <field name="arch" type="xml">
             <form string="Test">
                 <header>
-                    <button name="auction_confirm" type="object"
+                    <button name="action_auction_confirm" type="object"
                             class="btn-primary" string="Confirm"
                             context="{'validate_analytic': True}"
                             groups="fleet_auction.group_fleet_manager"
                             invisible="fleet_auction_state in
                             ('canceled','confirmed','success','invoiced')"/>
-                    <button name="auction_end" type="object"
+                    <button name="action_auction_end" type="object"
                             class="btn-secondary" string="End Auction"
                             groups="fleet_auction.group_fleet_manager"
                             invisible="fleet_auction_state in
                             ('canceled', 'success','invoiced')"/>
-                    <button name="auction_cancel" type="object"
+                    <button name="action_auction_cancel" type="object"
                             string="Cancel Auction"
                             groups="fleet_auction.group_fleet_manager,fleet_auction.group_fleet_user"
                             invisible="fleet_auction_state in
@@ -44,7 +44,7 @@
                             class="btn-primary" string="Create Invoice"
                             groups="fleet_auction.group_fleet_manager"
                             invisible="fleet_auction_state not in ('success')"/>
-                    <button name="auction_reset" type="object" string="Reset"
+                    <button name="action_auction_reset" type="object" string="Reset"
                             groups="fleet_auction.group_fleet_manager"
                             invisible="fleet_auction_state not in ('canceled','success','invoiced')"/>
                     <button name="send_confirmation" type="object"

@@ -106,7 +106,7 @@ class FleetAuctionAuction(models.Model):
             'fleet.auction')
         return super().create(vals_list)
 
-    def auction_confirm(self):
+    def action_auction_confirm(self):
         """While Confirm button triggered state changes to Confirmed"""
         for records in self:
             if records.start_price <= 0:
@@ -115,7 +115,7 @@ class FleetAuctionAuction(models.Model):
             raise UserError("Error--- already canceled")
         self.fleet_auction_state = 'confirmed'
 
-    def auction_cancel(self):
+    def action_auction_cancel(self):
         """while Cancel auction button triggered state changes to canceled"""
         if self.fleet_auction_state == 'success':
             raise UserError('An error occured,Already auction success')
@@ -129,7 +129,7 @@ class FleetAuctionAuction(models.Model):
                     'view_mode': 'form',
                     'context': {'default_res_id': self.id}}
 
-    def auction_end(self):
+    def action_auction_end(self):
         """while End Auction button triggered state changed to success"""
         if self.bid_ids:
             self.fleet_auction_state = 'success'
@@ -139,7 +139,7 @@ class FleetAuctionAuction(models.Model):
         else:
             raise UserError("Please add a bid")
 
-    def auction_reset(self):
+    def action_auction_reset(self):
         """while Reset button triggerd state chnage back to draft form"""
         self.fleet_auction_state = 'draft'
 
