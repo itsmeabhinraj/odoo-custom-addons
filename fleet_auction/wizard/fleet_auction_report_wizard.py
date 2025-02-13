@@ -88,7 +88,7 @@ class FleetAuctionReportWizard(models.TransientModel):
         '''this function will works when the xlsx button clicked. Wizard data and record data are passed to the
         action manager.js and then controler to get the xlsx report. js will force to download the excel sheet'''
         reports = self.fetch_data_report()
-        # reports = data['reports']
+        # use this - reports = data['reports']
         data = {
             'form_data': self.read()[0],
             'state_value': dict(self.fields_get('state').get('state').get('selection')),

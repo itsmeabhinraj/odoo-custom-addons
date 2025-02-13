@@ -1,12 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
-        <record id="fleet_auction_report_wizard_action" model="ir.actions.act_window">
-            <field name="name">Fleet Auction Xlsx Report</field>
-            <field name="res_model">fleet.auction.report.wizard</field>
-            <field name="view_mode">form</field>
-            <field name="view_id" ref="fleet_auction_report_wizard_view_form"/>
-            <field name="target">new</field>
-        </record>
         <record id="fleet_auction_report_wizard_view_form" model="ir.ui.view">
                <field name="name">fleet.auction.wizard.view.form</field>
                <field name="model">fleet.auction.report.wizard</field>
@@ -27,5 +20,13 @@
                        </footer>
                    </form>
                </field>
+        </record>
+<!--    action view -->
+        <record id="fleet_auction_report_wizard_action" model="ir.actions.act_window">
+            <field name="name">Fleet Auction Xlsx Report</field>
+            <field name="res_model">fleet.auction.report.wizard</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="fleet_auction_report_wizard_view_form"/>
+            <field name="target">new</field>
         </record>
 </odoo>

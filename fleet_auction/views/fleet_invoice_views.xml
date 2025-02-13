@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="fleet_invoice_customizations_form" model="ir.ui.view">
+    <record id="fleet_auction.fleet_invoice_view_move_form" model="ir.ui.view">
         <field name="name">fleet.invoice.form.inherit</field>
         <field name="model">account.move</field>
         <field name="inherit_id" ref="account.view_move_form"/>

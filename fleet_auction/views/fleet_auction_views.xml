@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!--    list view generating-->
     <record id="fleet_auction_view_list" model="ir.ui.view">
-        <field name="name">list view</field>
+        <field name="name">fleet.auction.view.list</field>
         <field name="model">fleet.auction.auction</field>
         <field name="arch" type="xml">
             <list string="list view">
@@ -16,10 +17,10 @@
                 <field name="active" invisible="1"/>
             </list>
         </field>
-
     </record>
+    <!--    form view generating -->
     <record id="fleet_auction_view_form" model="ir.ui.view">
-        <field name="name">form view</field>
+        <field name="name">fleet.auction.view.form</field>
         <field name="model">fleet.auction.auction</field>
         <field name="arch" type="xml">
             <form string="Test">
@@ -27,35 +28,35 @@
                     <button name="action_auction_confirm" type="object"
                             class="btn-primary" string="Confirm"
                             context="{'validate_analytic': True}"
-                            groups="fleet_auction.group_fleet_manager"
+                            groups="fleet_auction.fleet_auction_group_manager"
                             invisible="fleet_auction_state in
                             ('canceled','confirmed','success','invoiced')"/>
                     <button name="action_auction_end" type="object"
                             class="btn-secondary" string="End Auction"
-                            groups="fleet_auction.group_fleet_manager"
+                            groups="fleet_auction.fleet_auction_group_manager"
                             invisible="fleet_auction_state in
                             ('canceled', 'success','invoiced')"/>
                     <button name="action_auction_cancel" type="object"
                             string="Cancel Auction"
-                            groups="fleet_auction.group_fleet_manager,fleet_auction.group_fleet_user"
+                            groups="fleet_auction.fleet_auction_group_manager,fleet_auction.fleet_auction_group_user"
                             invisible="fleet_auction_state in
                             ('canceled', 'success','invoiced')"/>
                     <button name="create_invoice" type="object"
                             class="btn-primary" string="Create Invoice"
-                            groups="fleet_auction.group_fleet_manager"
+                            groups="fleet_auction.fleet_auction_group_manager"
                             invisible="fleet_auction_state not in ('success')"/>
                     <button name="action_auction_reset" type="object" string="Reset"
-                            groups="fleet_auction.group_fleet_manager"
+                            groups="fleet_auction.fleet_auction_group_manager"
                             invisible="fleet_auction_state not in ('canceled','success','invoiced')"/>
                     <button name="send_confirmation" type="object"
                             string="mail"
-                            groups="fleet_aucCanceledtion.group_fleet_manager"/>
+                            groups="fleet_aucCanceledtion.fleet_auction_group_manager"/>
                     <field name="fleet_auction_state" widget="statusbar"
                            options="{'clickable':'1'}"
-                           groups="fleet_auction.group_fleet_manager"
+                           groups="fleet_auction.fleet_auction_group_manager"
                            statusbar_visible="draft,ongoing,confirmed,success"/>
                     <field name="fleet_auction_state" widget="statusbar"
-                           groups="fleet_auction.group_fleet_user"
+                           groups="fleet_auction.fleet_auction_group_user"
                            statusbar_visible="draft,ongoing,confirmed,success"/>
                 </header>
                 <sheet>
@@ -64,7 +65,7 @@
                     <!-- smart button created here inside div-->
                     <div class="oe_button_box" name="button_box" position="inside">
                         <button class="oe_stat_button" type="object" icon="fa fa-bank"
-                                name="action_total_bid_count_action">
+                                name="action_total_bid_count">
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
                                     <field name="bid_count"/>
@@ -100,8 +101,7 @@
                         <group>
                             <field name="currency_id"/>
                             <field name="start_price"/>
-                            <field name="won_price"
-                                   invisible="not fleet_auction_state == 'success'"/>
+                            <field name="won_price" invisible="not fleet_auction_state == 'success'"/>
                             <field name="customer_id"
                                    invisible="fleet_auction_state not in ('success','invoiced')"/>
                             <div class="o_address_format"
@@ -122,10 +122,8 @@
                                        class="o_address_country"
                                        invisible="[('country_id', '!=', True)]"/>
                                 <group>
-                                    <field name="customer_phone"
-                                           invisible="not fleet_auction_state == 'success'"/>
-                                    <field name="customer_email"
-                                           invisible="not fleet_auction_state == 'success'"/>
+                                    <field name="customer_phone" invisible="not fleet_auction_state == 'success'"/>
+                                    <field name="customer_email" invisible="not fleet_auction_state == 'success'"/>
                                 </group>
                             </div>
                         </group>
@@ -142,7 +140,7 @@
                         <page string="Expense">
                             <group>
                                 <field name="expense_ids"
-                                       groups="fleet_auction.group_fleet_manager"/>
+                                       groups="fleet_auction.fleet_auction_group_manager"/>
                             </group>
                         </page>
                         <page string="Other info">
@@ -153,7 +151,7 @@
                         </page>
                     </notebook>
                 </sheet>
-<!--                chatter adding  -->
+                <!--                chatter adding  -->
                 <chatter>
                     <div class="oe_chatter">
                         <field name="message_follower_ids"
@@ -166,17 +164,16 @@
         </field>
     </record>
     <!--    SEARCH BAR -->
-    <record id="fleet_list_search" model="ir.ui.view">
-        <field name="name">fleet.auction.list.search</field>
+    <record id="fleet_auction_view_search" model="ir.ui.view">
+        <field name="name">fleet.auction.view.search</field>
         <field name="model">fleet.auction.auction</field>
         <field name="arch" type="xml">
             <search string="Search Opportunities">
                 <field name="name"/>
                 <field name="vehicle_name_id"/>
                 <field name="customer_id"/>
-                <filter string="Start date" name="start_date"
-                        date="create_date"/>
-<!--               defualt filter applied as draft -->
+                <filter string="Start date" name="start_date" date="create_date"/>
+                <!--               defualt filter applied as draft -->
                 <filter string="Draft" name="fleet_auction_state_default"
                         domain="[('fleet_auction_state', '=','draft')]"/>
                 <filter string="Ongoing" name="fleet_auction_state"
@@ -186,25 +183,20 @@
                 <filter string="Canceled" name="fleet_auction_state"
                         domain="[('fleet_auction_state', '=','canceled')]"/>
                 <separator/>
-                <filter string="Archived" name="archived"
-                        domain="[('active', '=', False)]"/>
-                <filter string="Unarchive" name="unarchived"
-                        domain="[('active', '=', True)]"/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <filter string="Unarchive" name="unarchived" domain="[('active', '=', True)]"/>
                 <group expand="0" string="Group By">
-                    <filter string="State" name="state_id"
-                            context="{'group_by': 'state_id'}"/>
-                    <filter string="Customer" name="customer_id"
-                            context="{'group_by': 'customer_id'}"/>
+                    <filter string="State" name="state_id" context="{'group_by': 'state_id'}"/>
+                    <filter string="Customer" name="customer_id" context="{'group_by': 'customer_id'}"/>
                 </group>
             </search>
         </field>
     </record>
-    <!--fleet_auction_view_form-->
+    <!--fleet_auction_action for xml-->
     <record id="fleet_auction_action" model="ir.actions.act_window">
-        <field name="name">Auction</field>
+        <field name="name">Model Auction</field>
         <field name="res_model">fleet.auction.auction</field>
         <field name="view_mode">list,form</field>
-        <field name="context">{"search_default_fleet_auction_state_default":1}
-        </field>
+        <field name="context">{"search_default_fleet_auction_state_default":1}</field>
     </record>
 </odoo>

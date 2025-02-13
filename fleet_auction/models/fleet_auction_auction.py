@@ -45,7 +45,7 @@ class FleetAuctionAuction(models.Model):
     best_bid = fields.Float(string="bid")
     same_bid = fields.Char(string="Auction_bid")
     tag_ids = fields.Many2many("crm.tag", string="Tag")
-    bid_count = fields.Integer('count', compute="_compute_bid_count", default=0)
+    bid_count = fields.Integer('count', compute="_compute_bid_count",store=True, default=0)
     # expense fields
     expense_ids = fields.One2many("fleet.expense",'auction_id')
     expense_id = fields.Many2one('fleet.expense')
@@ -90,13 +90,12 @@ class FleetAuctionAuction(models.Model):
             raise ValidationError(_("Date should be apply before end"))
 
     @api.model
-    def create(self, vals_list):
-        """Sequance code are created here. name is the sequance field name """
-        vals_list['name'] = self.env['ir.sequence'].next_by_code(
-            'fleet.auction')
-        return super().create(vals_list)
+    def create(self, vals):
+        """Sequance code are created here. name is the sequance field name.And this with record creation """
+        vals['name'] = self.env['ir.sequence'].next_by_code('fleet.auction')
+        return super().create(vals)
 
-    def action_total_bid_count_action(self):
+    def action_total_bid_count(self):
         '''bid smart button action name .viewing of smart tab'''
         return {
             'type': 'ir.actions.act_window',
@@ -116,20 +115,6 @@ class FleetAuctionAuction(models.Model):
             raise UserError("Error--- already canceled")
         self.fleet_auction_state = 'confirmed'
 
-    def action_auction_cancel(self):
-        """while Cancel auction button triggered state changes to canceled"""
-        if self.fleet_auction_state == 'success':
-            raise UserError('An error occured,Already auction success')
-        if self.env.user.has_group('fleet_auction.group_fleet_manager'):
-            self.fleet_auction_state = 'canceled'
-        else:
-            return {'type': 'ir.actions.act_window',
-                    'name': _('Cancellation Message'),
-                    'res_model': 'user.cancellation.message',
-                    'target': 'new',
-                    'view_mode': 'form',
-                    'context': {'default_res_id': self.id}}
-
     def action_auction_end(self):
         """while End Auction button triggered state changed to success"""
         if self.bid_ids:
@@ -139,6 +124,20 @@ class FleetAuctionAuction(models.Model):
             self.customer_id = sorted_value[0].bid_customer_id
         else:
             raise UserError("Please add a bid")
+
+    def action_auction_cancel(self):
+        """while Cancel auction button triggered state changes to canceled"""
+        if self.fleet_auction_state == 'success':
+            raise UserError('An error occured,Already auction success')
+        if self.env.user.has_group('fleet_auction.fleet_auction_group_manager'):
+            self.fleet_auction_state = 'canceled'
+        else:
+            return {'type': 'ir.actions.act_window',
+                    'name': _('Cancellation Message'),
+                    'res_model': 'user.cancellation.message',
+                    'target': 'new',
+                    'view_mode': 'form',
+                    'context': {'default_res_id': self.id}}
 
     def action_auction_reset(self):
         """while Reset button triggerd state chnage back to draft form"""
