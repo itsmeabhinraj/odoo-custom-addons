@@ -91,7 +91,7 @@ class FleetAuctionAuction(models.Model):
 
     @api.model
     def create(self, vals):
-        """Sequance code are created here. name is the sequance field name.And this with record creation """
+        """Sequance code are created here. name is the sequance field name.And this with record creationy """
         vals['name'] = self.env['ir.sequence'].next_by_code('fleet.auction')
         return super().create(vals)
 
@@ -189,6 +189,6 @@ class FleetAuctionAuction(models.Model):
 
     def send_confirmation(self):
         '''confirmation mail sending through function'''
-        # for auction in self:
-        template = self.env.ref('fleet_auction.confirmation_mail_template')
-        template.send_mail(auction.id, force_send=True)
+        for auction in self:
+            template = self.env.ref('fleet_auction.confirmation_mail_template')
+            template.send_mail(auction.id, force_send=True)
