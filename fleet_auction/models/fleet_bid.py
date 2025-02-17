@@ -8,7 +8,7 @@ class FleetBid(models.Model):
     _description = "fleet auction bid start here"
     _rec_name = 'auction_id'
 
-    bid_id = fields.Char(string="Bid ref", readonly=True,default=lambda self: _('New Bid'))
+    bid_id = fields.Char(string="Bid ref", readonly=True,default='New Bid') #lambda self: _('New Bid')
     auction_id = fields.Many2one('fleet.auction.auction',required=True,copy=False,ondelete='cascade')
     bid_amount = fields.Monetary(related='auction_id.start_price',readonly='True')
     bid_price = fields.Monetary('Bid Price')

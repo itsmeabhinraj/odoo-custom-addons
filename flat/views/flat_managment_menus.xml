@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <menuitem id="test_menu_root" name="Flat Managment">
+        <menuitem id="first_level_menu" name="Flat" action="flat_managment_action"/>
+<!--        <menuitem id="second_level_menu" name="Sale" action="customer_inherit"/>-->
+    </menuitem>
+</odoo>

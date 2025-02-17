@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="fleet_auction_detail" name="Auctions" track="1">
+        <t t-call="website.layout">
+            <t t-foreach="auction_details" t-as="auction">
+                <div class="card" style="width: 18rem;">
+                    <img src="" class="card-img-top" alt="..."/>
+                    <div class="card-body">
+                        <h5 class="card-title"><span t-esc="auction.vehicle_name_id.name"></span></h5>
+                        <p class="card-text"><span t-esc="auction.start_price"/></p>
+                    </div>
+                    <div>
+                         <a t-att-href="'/fleet_auctions/bid_form/%s' % auction.id" class="btn btn-primary">Add bid</a>
+                    </div>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

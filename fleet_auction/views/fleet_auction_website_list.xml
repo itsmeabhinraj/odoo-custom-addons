@@ -2,17 +2,44 @@
 <odoo>
     <template id="fleet_auction_index" name="Auctions" track="1">
         <t t-call="website.layout">
-            <div class="card" style="width: 18rem;">
-                <img src="..." class="card-img-top" alt="..."/>
+            <h2> Vehicle Auction </h2>
+            <t t-foreach="vehicle_auctions" t-as="vehicle">
+<!--            <div class="card justify-content-between" style="width: 18rem; ">-->
+<!--                <img t-att-src="vehicle.vehicle_name_id.image_128" widget="image" class="card-img-top"/>-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title"><t t-esc="vehicle.vehicle_name_id.name"></t></h5>-->
+<!--                    <p class="card-text"><t t-esc="vehicle.start_price"/></p>-->
+<!--                    <p class="card-text"><span>Start on </span><t t-esc="vehicle.start_date"/>-->
+<!--                        <span>End on </span><t t-esc="vehicle.end_date"/></p>-->
+<!--                    <a t-att-href="'/fleet_auctions/%s' % vehicle.id" class="btn btn-primary">View detail</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            </t>-->
+
+            <div class="card-deck">
+              <div class="card" style="width: 18rem;">
+                <img class="card-img-top" t-att-src="vehicle.vehicle_name_id.image_128"/>
                 <div class="card-body">
-                    <h5 class="card-title"><field name="fleet_auction"/></h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                  <h5 class="card-title"><t t-esc="vehicle.vehicle_name_id.name"></t></h5>
+                  <p class="card-text"><t t-esc="vehicle.start_price"/></p>
+                  <p class="card-text"><span>Start on </span><t t-esc="vehicle.start_date"/>
+                        <span>  End on </span><t t-esc="vehicle.end_date"/></p>
+                  <a t-att-href="'/fleet_auctions/%s' % vehicle.id" class="btn btn-primary">Open</a>
                 </div>
+                <div class="card-footer">
+                  <small class="text-muted">Last updated 3 mins ago</small>
+                </div>
+              </div>
             </div>
+            </t>
         </t>
     </template>
 </odoo>
+
+
+
+
+
 <!--&lt;!&ndash; Index &ndash;&gt;-->
 <!--<template id="index" name="Events" track="1">-->
 <!--    <t t-call="website.layout">-->

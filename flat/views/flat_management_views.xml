@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <record id="flat_management_view_list" model="ir.ui.view">
+        <field name="name">flat.view.list</field>
+        <field name="model">flat</field>
+        <field name="arch" type="xml">
+            <list string="list view">
+                <field name="flat_id"/>
+                <field name="name"/>
+                <field name="flat_amount" sum="Total"/>
+            </list>
+        </field>
+    </record>
+    <record id="flat_management_view_form" model="ir.ui.view">
+        <field name="name">flat.view.form</field>
+        <field name="model">flat</field>
+        <field name="arch" type="xml">
+            <form string="Test">
+                <sheet>
+                    <group>
+                        <field name="flat_id"/>
+                        <field name="name"/>
+                        <field name="flat_amount" sum="Total"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+<!--    action view -->
+    <record id="flat_managment_action" model="ir.actions.act_window">
+        <field name="name">Flat</field>
+        <field name="res_model">flat</field>
+        <field name="view_mode">list,form</field>
+    </record>
+</odoo>

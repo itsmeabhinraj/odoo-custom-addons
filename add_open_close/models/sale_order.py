@@ -29,5 +29,6 @@ class SaleOrder(models.Model):
                 order.change_state = 'close'
             else:
                 order.change_state = 'open'
-        value = self.env.search([]).filtered().sorted()
+        value = self.env['sale.order'].search([('state','=','sale')]).mapped('partner_id').mapped('email')
+        print(value)
 

@@ -8,7 +8,7 @@
     'application': True,
     'auto_install': True,
     'license': 'LGPL-3',
-    'depends':['base','hr','mail','contacts','fleet','crm','account'],
+    'depends':['base','hr','mail','contacts','fleet','crm','account','website'],
     'data': [
         'security/fleet_auction_groups.xml',
         'security/ir.model.access.csv',
@@ -22,6 +22,8 @@
         'views/fleet_vehicle_views.xml',
         'views/fleet_bid_views.xml',
         'views/fleet_auction_views.xml',
+        'views/fleet_auction_website_form.xml',
+        'views/fleet_auction_website_detail.xml',
         'views/fleet_auction_website_list.xml',
         'views/fleet_auction_website_menu.xml',
         'views/fleet_auction_menu.xml',
