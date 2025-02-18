@@ -5,35 +5,44 @@
            <div class="container">
                <h3>Enter your bid</h3>
                <t t-foreach="auction_details" t-as="auction">
-                   <form action="/fleet_auctions/bid_form_submit" enctype="multipart/form-data">
-                       <label>Vehicle</label>
-                       <t t-esc="auction.vehicle_name_id.name"></t><br/>
-<!--                       <label>Auction ID</label>-->  
-<!--                       <t t-esc="auction.auction_id"></t><br/>-->
-    <!--<label>Name</label>
-                       <t t-esc="auction.vehicle_name_id.name"></t><br/>
-                    <input id="auction_id" type="text" name="auction_id"/>-->
-                       <label>Start Price</label>
-                       <t t-esc="auction.start_price"></t>
-<!--                       <input id="bid_amount" type="float" name="auction.start_price"/><br/>-->
-                       <label>Date</label>
-                       <input id="bid_date" type="date" name="bid_date"/><br/>
-<!--                       <label>Currency</label>-->
-<!--                       <input id="currency_id" type="text" name="currency_id"/><br/>-->
-                       <label>Bid Price</label>
-                       <input id="bid_price" type="text" name="bid_price"/><br/>
-                       <label>Phone</label>
-                       <input id="phone" type="integer" name="phone"/><br/>
-
-    <!--                   <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px">-->
-    <!--                        <span class="s_website_form_label_content">Name</span>-->
-    <!--                        <span class="s_website_form_mark"> *</span>-->
-    <!--                   </label>-->
-    <!--                   <div class="col-sm">-->
-    <!--                       <input id="name" type="text" class="form-control s_website_form_input" name="auction_id" required="1"/>-->
-    <!--                   </div>-->
-                       <button type="submit" class="btn btn-primary">Submit</button>
-                   </form>
+                   <div>
+                       <form action="/fleet_auctions/bid_form_submit" enctype="multipart/form-data">
+                           <input type="hidden" name="auction_id" t-att-value="auction.id"/>
+                           <!--   pre loaded fields  -->
+                           <div class="form-group row">
+                               <label for="vehiclename" class="col-sm-2 col-form-label"><b>Vehicle Name</b></label>
+                                 <div class="col-sm-10">
+                                   <b><input type="text" readonly="True" class="form-control-plaintext" id="vehiclename" t-att-value="auction.vehicle_name_id.name"/></b>
+                                 </div>
+                           </div><br/>
+                           <div class="form-group row">
+                               <label for="startprice" class="col-sm-2 col-form-label">Start Price</label>
+                                 <div class="col-sm-10">
+                                   <b><input type="text" readonly="True" class="form-control-plaintext" id="startprice" t-att-value="auction.start_price"/></b>
+                                 </div>
+                           </div><br/>
+                           <!--    form to fill   -->
+                           <div class="form-group row">
+                               <label for="bid_date" class="col-sm-2 col-form-label">Date</label>
+                               <div class="col-sm-10">
+                                   <input type="date" class="form-control" required="1" id="bid_date" name="bid_date" placeholder="date" style="width: 350px"/>
+                               </div>
+                            </div><br/>
+                           <div class="form-group row">
+                               <label for="bidprice" class="col-sm-2 col-form-label">Bid Price</label>
+                               <div class="col-sm-10">
+                                   <input type="float" class="form-control" required="1" id="bidprice" name="bid_price" placeholder=" Type Bid Amount" style="width: 350px"/>
+                               </div>
+                           </div><br/>
+                           <div class="form-group row">
+                               <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                               <div class="col-sm-10">
+                                   <input type="integer" class="form-control" required="1" id="phone" name="phone" placeholder="Phone number" style="width: 350px"/>
+                               </div>
+                           </div><br/>
+                          <button type="submit" class="btn btn-primary">Submit</button>
+                       </form>
+                   </div>
                </t>
            </div>
        </t>
@@ -43,63 +52,24 @@
 
 
 
-<!--<template id="web_form_template">-->
-<!--       <t t-call="website.layout">-->
-<!--           <form action="/webform/submit" enctype="multipart/form-data" class="o_mark_required" data-mark="*" data-model_name="" data-success-page="">-->
-<!--               <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>-->
-<!--                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">-->
-<!--                    <span class="s_website_form_label_content">Name</span>-->
-<!--                    <span class="s_website_form_mark"> *</span>-->
-<!--                </label>-->
-<!--                <div class="col-sm">-->
-<!--                    <input id="name" type="text" class="form-control s_website_form_input" name="auction_id" required="1"/>-->
-<!--                </div>-->
-<!--                <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">-->
-<!--                    <span class="s_website_form_label_content">Phone</span>-->
-<!--                    <span class="s_website_form_mark"> *</span>-->
-<!--                </label>-->
-<!--                <div class="col-sm">-->
-<!--                    <input id="phone" type="text" class="form-control s_website_form_input" name="bid_price" required="1"/>-->
-<!--                </div>-->
-
-<!--               <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">-->
-<!--                    <span class="s_website_form_label_content">Bid Price</span>-->
-<!--                    <span class="s_website_form_mark"> *</span>-->
-<!--               </label>-->
-<!--               <div class="col-sm">-->
-<!--                    <input id="phone" type="text" class="form-control s_website_form_input" name="bid_price" required="1"/>-->
-<!--               </div>-->
-
-<!--               <label class="col-form-label col-sm-auto s_website_form_label" style="width: 200px" for="studio1">-->
-<!--                    <span class="s_website_form_label_content">Bid Date</span>-->
-<!--                    <span class="s_website_form_mark"> *</span>-->
-<!--               </label>-->
-<!--                <div class="col-sm">-->
-<!--                    <input id="phone" type="text" class="form-control s_website_form_input" name="bid_date" required="1"/>-->
-<!--                </div>-->
-
-<!--                <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">-->
-<!--                    <div style="width: 200px;" class="s_website_form_label"/>-->
-<!--                    <button type="submit" class="btn btn-primary">Submit</button>-->
-<!--                </div>-->
-<!--               <label>Bid date</label>-->
-
-<!--           </form>-->
-<!--       </t>-->
-<!--</template>-->
 
 
-<!--                  <div class="form-group">
-                    <label for="exampleInputEmail1">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                  </div>
-                  <div class="form-check">
-                    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                  </div>
-                  <-->
+    <!--                     vehicle name   -->
+    <!--                       <label>Vehicle</label>-->
+    <!--                       <h4><t t-esc="auction.vehicle_name_id.name"></t><br/></h4>-->
+    <!--&lt;!&ndash;                        for auction id &ndash;&gt;-->
+    <!--                       <input type="hidden" name="auction_id" t-att-value="auction.id"/><br/>-->
+    <!--&lt;!&ndash;                      vehicle amount&ndash;&gt;-->
+    <!--                       <label>Start Price</label>-->
+    <!--                       <input type="text" name="start_price" t-att-value="auction.start_price"/><br/>-->
+    <!--&lt;!&ndash;                       <t t-esc="auction.start_price"></t><br/>&ndash;&gt;-->
+    <!--&lt;!&ndash;                       date &ndash;&gt;-->
+    <!--                       <label>Date</label>-->
+    <!--                       <input id="bid_date" type="date" name="bid_date"/><br/>-->
+    <!--&lt;!&ndash;                       bid price&ndash;&gt;-->
+    <!--                       <label>Bid Price</label>-->
+    <!--                       <input id="bid_price" type="text" name="bid_price"/><br/>-->
+    <!--                       <label>Phone</label>-->
+    <!--                       <input id="phone" type="integer" name="phone"/><br/>-->
+    <!--&lt;!&ndash;                       submit button&ndash;&gt;-->
+    <!--                       <button type="submit" class="btn btn-primary">Submit</button>-->

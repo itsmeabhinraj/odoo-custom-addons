@@ -10,8 +10,9 @@ class FleetAuctionAuction(models.Model):
     _inherit = ['mail.thread', 'mail.activity.mixin']
 
     name = fields.Char(string="Fleet Reference", readonly=True, default=lambda self: _('New'))
-    vehicle_name_id = fields.Many2one("fleet.vehicle", required=True, copy=False)
+    vehicle_name_id = fields.Many2one("fleet.vehicle", required=True, copy=True)
     brand = fields.Char('Brand')
+    vehicle_image = fields.Image(related='vehicle_name_id.image_128')
     start_date = fields.Date("Start date")
     end_date = fields.Date("End date")
     active = fields.Boolean('Active', default=True)
@@ -19,12 +20,12 @@ class FleetAuctionAuction(models.Model):
                                                                       ('ongoing', 'Ongoing'),
                                                                       ('confirmed', 'Confirmed'),
                                                                       ('success', 'Success'),
-                                                                      ('canceled', 'Canceled')], default='draft')
+                                                                      ('canceled', 'Canceled')],copy=False, default='draft')
     company_id = fields.Many2one('res.company', copy=False, string="Company", readonly=True,
                                  default=lambda self: self.env.company.id)
     currency_id = fields.Many2one('res.currency', string="Currency",
                                   default=lambda self: self.env.company.currency_id.id)
-    start_price = fields.Monetary('Start price', copy=False, required=True)
+    start_price = fields.Monetary('Start price', copy=True, required=True)
     won_price = fields.Monetary('Won price', copy=False)
     responsible_id = fields.Many2one('res.users', readonly=True, string="Responsible",
                                      default=lambda self: self.env.uid)
@@ -75,13 +76,14 @@ class FleetAuctionAuction(models.Model):
         """computing the totat expenses in the . each auction"""
         for record in self:
             record.total_expense = sum(record.expense_ids.mapped('expense_amount'))
+    #         this compute method accessed without api because of record.expense_ids.mapped('expense_amount') always
+    #         retrive related expense dynamically.And whenver access the expense field unneccecary compute method run.
 
     def _compute_count_invoice(self):
         '''computing number of invoice created for this auction'''
         for record in self:
             record.count_invoice = (self.env['account.move'].search_count([("auction_id", '=', self.id)]))
 
-    @api.model
     @api.constrains('start_date', 'end_date')
     def date_constrains(self):
         """applying validation for start_date of auction and end_date.If the

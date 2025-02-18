@@ -62,6 +62,7 @@
                 <sheet>
                     <widget name="web_ribbon" title="Paid" bg_color="text-bg-success"
                             invisible="status_invoice not in ('paid')"/>
+                    <field name="vehicle_image" widget='image' class="oe_avatar"/>
                     <!-- smart button created here inside div-->
                     <div class="oe_button_box" name="button_box" position="inside">
                         <button class="oe_stat_button" type="object" icon="fa fa-bank"

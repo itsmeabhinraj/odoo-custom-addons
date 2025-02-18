@@ -3,6 +3,17 @@
     <template id="fleet_auction_detail" name="Auctions" track="1">
         <t t-call="website.layout">
             <t t-foreach="auction_details" t-as="auction">
+                <div>
+                    <h3><span t-esc="auction.vehicle_name_id.name"></span></h3>
+                    <h5><span t-esc="auction.brand"/></h5>
+                    <p>Auction starts from <span t-esc="auction.start_price"/></p>
+                    <p>Start Date <span t-esc="auction.start_date"/></p>
+                    <p>Auction Ends On  <span t-esc="auction.end_date"/></p>
+                    <p>Current Status of auction  <span t-esc="auction.fleet_auction_state"/></p>
+                    <p>Won Price <span t-esc="auction.won_price"/></p>
+                    <p>Customer  <span t-esc="auction.customer_id.display_name"/></p>
+
+                </div>
                 <div class="card" style="width: 18rem;">
                     <img src="" class="card-img-top" alt="..."/>
                     <div class="card-body">
@@ -17,3 +28,36 @@
         </t>
     </template>
 </odoo>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--<t t-if="not request.env.user.has_group(') ">-->
+<!--<bid price-->
+<!--        <bid status-->
+<!--                <t t-foreach="auction.bid_ids.filtered(lambda b:b.bid_customer_id.id==request.env.user.partner_id.id" t-as bid-->
+
+
+
+<!--for customer bid-->
+<!--            <t t-if="request.env.user.has_group(')"></t>-->
+<!--            <table class="table">-->
+<!--                <thead>-->
+<!--                    <tr>-->
+<!--                        head-->
+<!--                    </tr>-->
+<!--                </thead>-->
+<!--                <t t-foreach="auction.bid_ids" t-as="bid"-->
+<!--                <tr>-->
+<!--                    <td>< t-esc</td>-->
+<!--                </tr>-->
+<!--            </table>-->
