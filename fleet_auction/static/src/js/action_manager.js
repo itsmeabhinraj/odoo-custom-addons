@@ -13,7 +13,5 @@ registry.category("ir.actions.report handlers").add("xlsx", async (action)=> {
            complete: () => unblockUI,
            error: (error) => self.call('crash_manager', 'rpc_error', error),
       });
-
-
   }
 });

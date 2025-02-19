@@ -3,23 +3,26 @@
     <template id="web_form_template">
        <t t-call="website.layout">
            <div class="container">
-               <h3>Enter your bid</h3>
                <t t-foreach="auction_details" t-as="auction">
                    <div>
                        <form action="/fleet_auctions/bid_form_submit" enctype="multipart/form-data">
-                           <input type="hidden" name="auction_id" t-att-value="auction.id"/>
+                           <p>
+                               <h5>Bid Id is </h5>
+                               <input type="text" name="auction_id" class="form-control-plaintext" t-att-value="auction.id"/>
+                           </p>
+                           <input type="text" name="auction_id_new" t-att-value="auction.id"/>
                            <!--   pre loaded fields  -->
                            <div class="form-group row">
                                <label for="vehiclename" class="col-sm-2 col-form-label"><b>Vehicle Name</b></label>
-                                 <div class="col-sm-10">
+                               <div class="col-sm-10">
                                    <b><input type="text" readonly="True" class="form-control-plaintext" id="vehiclename" t-att-value="auction.vehicle_name_id.name"/></b>
-                                 </div>
+                               </div>
                            </div><br/>
                            <div class="form-group row">
                                <label for="startprice" class="col-sm-2 col-form-label">Start Price</label>
-                                 <div class="col-sm-10">
+                               <div class="col-sm-10">
                                    <b><input type="text" readonly="True" class="form-control-plaintext" id="startprice" t-att-value="auction.start_price"/></b>
-                                 </div>
+                               </div>
                            </div><br/>
                            <!--    form to fill   -->
                            <div class="form-group row">
@@ -27,7 +30,7 @@
                                <div class="col-sm-10">
                                    <input type="date" class="form-control" required="1" id="bid_date" name="bid_date" placeholder="date" style="width: 350px"/>
                                </div>
-                            </div><br/>
+                           </div><br/>
                            <div class="form-group row">
                                <label for="bidprice" class="col-sm-2 col-form-label">Bid Price</label>
                                <div class="col-sm-10">
@@ -48,28 +51,3 @@
        </t>
     </template>
 </odoo>
-
-
-
-
-
-
-    <!--                     vehicle name   -->
-    <!--                       <label>Vehicle</label>-->
-    <!--                       <h4><t t-esc="auction.vehicle_name_id.name"></t><br/></h4>-->
-    <!--&lt;!&ndash;                        for auction id &ndash;&gt;-->
-    <!--                       <input type="hidden" name="auction_id" t-att-value="auction.id"/><br/>-->
-    <!--&lt;!&ndash;                      vehicle amount&ndash;&gt;-->
-    <!--                       <label>Start Price</label>-->
-    <!--                       <input type="text" name="start_price" t-att-value="auction.start_price"/><br/>-->
-    <!--&lt;!&ndash;                       <t t-esc="auction.start_price"></t><br/>&ndash;&gt;-->
-    <!--&lt;!&ndash;                       date &ndash;&gt;-->
-    <!--                       <label>Date</label>-->
-    <!--                       <input id="bid_date" type="date" name="bid_date"/><br/>-->
-    <!--&lt;!&ndash;                       bid price&ndash;&gt;-->
-    <!--                       <label>Bid Price</label>-->
-    <!--                       <input id="bid_price" type="text" name="bid_price"/><br/>-->
-    <!--                       <label>Phone</label>-->
-    <!--                       <input id="phone" type="integer" name="phone"/><br/>-->
-    <!--&lt;!&ndash;                       submit button&ndash;&gt;-->
-    <!--                       <button type="submit" class="btn btn-primary">Submit</button>-->

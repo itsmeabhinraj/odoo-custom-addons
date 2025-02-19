@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="fleet_auction_bid_success" name="Auctions" track="1">
+        <t t-call="website.layout">
+            <div class="container text-center mt-5">
+                <div class="alert alert-success">
+                    <h2>Your bid has to be submitted successfully</h2>
+                    <p>Thank you for participating the auction</p>
+                </div>
+                <div class="mt-4">
+                    <a href="/fleet_auctions" class="btn btn-primary">Home Page</a>
+                    <a t-attf-href="/fleet_auctions/bid_form/{{auction}}" class="btn btn-primary">Add Another Bid</a>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

@@ -3,61 +3,59 @@
     <template id="fleet_auction_detail" name="Auctions" track="1">
         <t t-call="website.layout">
             <t t-foreach="auction_details" t-as="auction">
-                <div>
-                    <h3><span t-esc="auction.vehicle_name_id.name"></span></h3>
-                    <h5><span t-esc="auction.brand"/></h5>
-                    <p>Auction starts from <span t-esc="auction.start_price"/></p>
-                    <p>Start Date <span t-esc="auction.start_date"/></p>
-                    <p>Auction Ends On  <span t-esc="auction.end_date"/></p>
-                    <p>Current Status of auction  <span t-esc="auction.fleet_auction_state"/></p>
-                    <p>Won Price <span t-esc="auction.won_price"/></p>
-                    <p>Customer  <span t-esc="auction.customer_id.display_name"/></p>
-
-                </div>
-                <div class="card" style="width: 18rem;">
-                    <img src="" class="card-img-top" alt="..."/>
-                    <div class="card-body">
-                        <h5 class="card-title"><span t-esc="auction.vehicle_name_id.name"></span></h5>
-                        <p class="card-text"><span t-esc="auction.start_price"/></p>
+                <div class="container">
+                    <div class="row p-4">
+                        <div class="col-md-10" style="height:100px;">
+                            <img t-att-src="image_data_uri(auction.vehicle_image)" class="img-fluid w-100" style="max-height: 300px; object-fit: cover;" alt="Auction Banner"/>
+                        </div>
+                        <div class="col-md-2">
+                            <t t-if="auction.fleet_auction_state !=('success','draft')">
+                                <div class="card p-3" style="width:200px">
+                                    <h5>Place Your bid</h5>
+                                    <a t-att-href="'/fleet_auctions/bid_form/%s' % auction.id" class="btn btn-primary w-100">Add</a>
+                                </div>
+                            </t>
+                        </div>
                     </div>
-                    <div>
-                         <a t-att-href="'/fleet_auctions/bid_form/%s' % auction.id" class="btn btn-primary">Add bid</a>
+                    <div class="row p-20" style="padding:200px;">
+                        <div class="col-md-8">
+<!--                            heading -->
+                            <h3><span t-esc="auction.vehicle_name_id.name"></span></h3>
+                            <h5>Brand <span t-esc="auction.brand"/></h5><br/>
+                            <p>Auction starts from</p><h5><span t-esc="auction.start_price"/></h5>
+                            <!--                            date section-->
+                            <div class="row">
+                                <div class="col-md-5 p-3">
+                                    <h6>Start On</h6>
+                                     <div class="card p-3 text-center" style="width:150px">
+                                         <p><span t-esc="auction.start_date"/></p>
+                                     </div>
+                                </div>
+                                <div class="col-md-5 p-3">
+                                    <h6>Ends in</h6>
+                                     <div class="card p-3 text-center" style="width:150px">
+                                         <p><span t-esc="auction.end_date"/></p>
+                                     </div>
+                                </div>
+                            </div>
+<!--                            won person details-->
+                            <t t-if="auction.fleet_auction_state =='success'">
+                                    <b><p>Auction Winner -</p></b><h5><span t-esc="auction.customer_id.display_name"/></h5>
+                                    <p>Won Price <span t-esc="auction.won_price"/></p>
+                            </t>
+                        </div>
+<!--                        status of auction -->
+                        <div class="col-md-4">
+                            <div class="card p-3 text-center" style="width:200px">
+                                <h6>Auction Status</h6>
+                                <div style="width: 180; height:50; background-color:green;border-radius: 10px;">
+                                <h6><span t-esc="auction.fleet_auction_state"/></h6>
+                                    </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </t>
         </t>
     </template>
 </odoo>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!--<t t-if="not request.env.user.has_group(') ">-->
-<!--<bid price-->
-<!--        <bid status-->
-<!--                <t t-foreach="auction.bid_ids.filtered(lambda b:b.bid_customer_id.id==request.env.user.partner_id.id" t-as bid-->
-
-
-
-<!--for customer bid-->
-<!--            <t t-if="request.env.user.has_group(')"></t>-->
-<!--            <table class="table">-->
-<!--                <thead>-->
-<!--                    <tr>-->
-<!--                        head-->
-<!--                    </tr>-->
-<!--                </thead>-->
-<!--                <t t-foreach="auction.bid_ids" t-as="bid"-->
-<!--                <tr>-->
-<!--                    <td>< t-esc</td>-->
-<!--                </tr>-->
-<!--            </table>-->

@@ -22,6 +22,7 @@
         'views/fleet_vehicle_views.xml',
         'views/fleet_bid_views.xml',
         'views/fleet_auction_views.xml',
+        'views/website_success_page.xml',
         'views/fleet_auction_website_form.xml',
         'views/fleet_auction_website_detail.xml',
         'views/fleet_auction_website_list.xml',

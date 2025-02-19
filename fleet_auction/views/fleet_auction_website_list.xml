@@ -7,29 +7,28 @@
                     <h4> Vehicle Auction</h4>
                     <t t-foreach="vehicle_auctions" t-as="vehicle">
                         <div class="col my-8">
-                        <div class="card-deck" style="display: flex;">
-                          <div class="card" style="display: flex; width: 18rem;">
-    <!--                          vehicle image -->
-                              <div>
-                                  <img class="card-img-top" t-att-src="image_data_uri(vehicle.vehicle_image)" style="height: 10rem;"/>
-                              </div>
-                              <div class="card-body">
-                                  <div style="bg_color:yellow;">
-                                     <h5 class="card-title"><t t-esc="vehicle.vehicle_name_id.name"></t></h5>
-                                  </div>
-                                  <p class="card-text"><t t-esc="vehicle.start_price"/></p>
-                                  <p class="card-text"><span>Start on </span><t t-esc="vehicle.start_date"/>
-                                        <span>  End on </span><t t-esc="vehicle.end_date"/></p>
-                                  <a t-att-href="'/fleet_auctions/%s' % vehicle.id" class="btn btn-primary">Open</a>
-                              </div>
-                              <div class="card-footer">
-                                  <small class="text-muted">Last updated 3 mins ago</small>
-                              </div>
-                          </div>
-                        </div>
+                            <div class="card-deck" style="display: flex; flex-wrap: wrap;gap: 10px;">
+                                <div class="card mt-5" style="display: flex; flex-direction: column; width: 18rem; min-height: 22rem;marging:10px;">
+        <!--                          vehicle image -->
+                                    <div>
+                                        <img class="card-img-top" t-att-src="image_data_uri(vehicle.vehicle_image)" style="height: 10rem;"/>
+                                    </div>
+                                    <div class="card-body" style="flex-grow: 1;">
+                                        <div style="height: 3rem; overflow: hidden;">
+                                            <h5 class="card-title"><t t-esc="vehicle.vehicle_name_id.name"></t></h5>
+                                        </div>
+                                        <div style="height: 4rem;padding:10px;">
+                                            <p class="card-text"><t t-esc="vehicle.start_price"/></p>
+                                        </div>
+                                        <p class="card-text"><span>Start on </span><t t-esc="vehicle.start_date"/>
+                                            <span>  End on </span><t t-esc="vehicle.end_date"/></p>
+                                        <a t-att-href="'/fleet_auctions/%s' % vehicle.id" class="btn btn-primary">Open</a>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </t>
-            </div>
+                </div>
             </div>
         </t>
     </template>
