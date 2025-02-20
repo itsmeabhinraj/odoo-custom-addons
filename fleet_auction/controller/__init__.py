@@ -1,2 +1,2 @@
 from . import main
-from . import webform_controller
+from . import fleet_auction_configurator

@@ -10,8 +10,7 @@ class SaleOrder(models.Model):
     def _add_associated_products(self):
         if self.associated_products == True:
             for product in self.partner_id.associated_products_ids:
-                same_product = self.order_line.filtered(
-                    lambda l: l.product_id == product)
+                same_product = self.order_line.filtered(lambda l: l.product_id == product)
                 if not same_product:
                        self.order_line = [
                         Command.create({

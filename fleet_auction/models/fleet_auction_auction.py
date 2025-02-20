@@ -47,6 +47,7 @@ class FleetAuctionAuction(models.Model):
     same_bid = fields.Char(string="Auction_bid")
     tag_ids = fields.Many2many("crm.tag", string="Tag")
     bid_count = fields.Integer('count', compute="_compute_bid_count",store=True, default=0)
+    current_bid_price = fields.Monetary('Current price', compute='_compute_current_bid_price',store=True)
     # expense fields
     expense_ids = fields.One2many("fleet.expense",'auction_id')
     expense_id = fields.Many2one('fleet.expense')
@@ -69,7 +70,16 @@ class FleetAuctionAuction(models.Model):
     def _compute_bid_count(self):
         '''computing the count of bids.here i added total count bid_ids'''
         for record in self:
-            record.bid_count = len(record.bid_ids)
+            # if record.bid_ids.states == 'confirmed':
+                record.bid_count = len(record.bid_ids)
+                print(record)
+                print(record.bid_count)
+
+    @api.depends('bid_ids')
+    def _compute_current_bid_price(self):
+        if self.bid_ids:
+            sorted_value = self.bid_ids.sorted(lambda a: a.bid_price, reverse=True)
+            self.current_bid_price = sorted_value[0].bid_price
 
     @api.depends('expense_ids.expense_amount')
     def _compute_total_expense(self):
@@ -116,7 +126,7 @@ class FleetAuctionAuction(models.Model):
         if self.fleet_auction_state == 'canceled':
             raise UserError("Error--- already canceled")
         self.fleet_auction_state = 'confirmed'
-
+    # original code
     def action_auction_end(self):
         """while End Auction button triggered state changed to success"""
         if self.bid_ids:
@@ -126,6 +136,16 @@ class FleetAuctionAuction(models.Model):
             self.customer_id = sorted_value[0].bid_customer_id
         else:
             raise UserError("Please add a bid")
+    #
+    # def action_auction_end(self):
+    #     """while End Auction button triggered state changed to success"""
+    #     if self.bid_ids:
+    #         # self.fleet_auction_state = 'success'
+    #         sorted_value = self.bid_ids.sorted(lambda a: a.bid_price, reverse=True)
+    #         self.won_price = sorted_value[0].bid_price
+    #         self.customer_id = sorted_value[0].bid_customer_id
+    #     else:
+    #         raise UserError("Please add a bid")
 
     def action_auction_cancel(self):
         """while Cancel auction button triggered state changes to canceled"""

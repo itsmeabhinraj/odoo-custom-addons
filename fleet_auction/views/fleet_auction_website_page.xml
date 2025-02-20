@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <template id="fleet_auction_detail" name="Auctions" track="1">
+    <template id="fleet_auction_page" name="Auctions" track="1">
         <t t-call="website.layout">
             <t t-foreach="auction_details" t-as="auction">
                 <div class="container">
@@ -11,28 +11,35 @@
                         <div class="col-md-2">
                             <t t-if="auction.fleet_auction_state !=('success','draft')">
                                 <div class="card p-3" style="width:200px">
-                                    <h5>Place Your bid</h5>
+                                    <h5>Place Your Bid</h5>
                                     <a t-att-href="'/fleet_auctions/bid_form/%s' % auction.id" class="btn btn-primary w-100">Add</a>
                                 </div>
                             </t>
                         </div>
                     </div>
                     <div class="row p-20" style="padding:200px;">
-                        <div class="col-md-8">
-<!--                            heading -->
-                            <h3><span t-esc="auction.vehicle_name_id.name"></span></h3>
-                            <h5>Brand <span t-esc="auction.brand"/></h5><br/>
-                            <p>Auction starts from</p><h5><span t-esc="auction.start_price"/></h5>
+                            <div class="col-md-8">
+                                        <!--                            heading -->
+                                <h3><span t-esc="auction.vehicle_name_id.name"></span></h3>
+                                <h5>Brand <span t-esc="auction.brand"/></h5><br/>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <p>Auction starts from</p><h5><span t-esc="auction.start_price" t-options="{'widget': 'monetary', 'display_currency': auction.currency_id}"/></h5>
+                                    </div>
+                                    <div class="col-md-4">
+                                       <p>Current Auction</p><h5><span t-esc="auction.current_bid_price" t-options="{'widget': 'monetary', 'display_currency': auction.currency_id}"/></h5>
+                                    </div>
+                                </div>
                             <!--                            date section-->
                             <div class="row">
                                 <div class="col-md-5 p-3">
-                                    <h6>Start On</h6>
+                                    <h6>Starts</h6>
                                      <div class="card p-3 text-center" style="width:150px">
                                          <p><span t-esc="auction.start_date"/></p>
                                      </div>
                                 </div>
                                 <div class="col-md-5 p-3">
-                                    <h6>Ends in</h6>
+                                    <h6>Ends</h6>
                                      <div class="card p-3 text-center" style="width:150px">
                                          <p><span t-esc="auction.end_date"/></p>
                                      </div>
@@ -46,12 +53,15 @@
                         </div>
 <!--                        status of auction -->
                         <div class="col-md-4">
-                            <div class="card p-3 text-center" style="width:200px">
+                            <div class="card p-3 m-3 text-center" style="width:200px">
                                 <h6>Auction Status</h6>
                                 <div style="width: 180; height:50; background-color:green;border-radius: 10px;">
-                                <h6><span t-esc="auction.fleet_auction_state"/></h6>
+                                <div class="my-2"><h6><span class="text-center p-2" style='text-align:center;height:10px;' t-esc="state"/></h6></div>
                                     </div>
                             </div>
+                        </div>
+                        <div>
+
                         </div>
                     </div>
                 </div>
