@@ -11,6 +11,11 @@
                                 <div class="card mt-5" style="display: flex; flex-direction: column; width: 18rem; min-height: 22rem;marging:10px;">
         <!--                          vehicle image -->
                                     <div>
+                                        <div style="width: 40%; height:60;border-radius: 10px;">
+                                            <div class="my-2"><h6><span class="text-center p-2" style='text-align:center;height:10px;' t-esc="dict(vehicle._fields['fleet_auction_state'].selection).get(vehicle.fleet_auction_state)"/></h6></div>
+                                        </div>
+                                    </div>
+                                    <div>
                                         <img class="card-img-top" t-att-src="image_data_uri(vehicle.vehicle_image)" style="height: 10rem;"/>
                                     </div>
                                     <div class="card-body" style="flex-grow: 1;">

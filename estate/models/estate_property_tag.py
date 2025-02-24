@@ -5,3 +5,17 @@ class EstatePropertytag(models.Model):
     _description ="Estate property tag listed"
 
     name=fields.Char('Property tage name', required=True)
+
+
+
+
+
+
+
+
+
+
+
+
+
+

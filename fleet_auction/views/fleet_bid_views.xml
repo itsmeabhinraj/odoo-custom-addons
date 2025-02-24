@@ -47,6 +47,7 @@
                         <group>
                             <field name="currency_id"/>
                             <field name="bid_amount"/>
+                            <field name="current_bid_amount" string="Current value"/>
                             <field name="user_id"/>
                         </group>
                     </group>

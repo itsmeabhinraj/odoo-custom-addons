@@ -1,51 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="fleet_auction_template">
-       <t t-call="website.layout">
-           <div class="container">
-               <t t-foreach="auction_details" t-as="auction">
-                   <div>
-                       <form action="/fleet_auctions/bid_form_submit" enctype="multipart/form-data">
-                           <div class="form-group row">
-                               <label for="auction" class="col-sm-2 col-form-label"><b>Your Bid ID :</b></label>
-                               <div class="col-sm-10">
-                                    <input type="text" name="auction_id" id="auction" class="form-control-plaintext" t-att-value="auction.id"/>
-
+        <t t-call="website.layout">
+            <div class="container">
+                <style>
+                    .form-control {
+                        width: 300px;
+                    }
+                    @media (max-width: 767px) {
+                        .form-data {
+                            width: 100%;
+                            padding:10px !important;
+                            margin: 0px 25px 0px 0px;
+                        }
+                        .form-control {
+                            margin: 0px 25px 0px 0px;
+                        }
+                        .col-sm-2, .col-sm-10 {
+                            width: 100%;
+                            margin-top: 0;
+                        }
+                </style>
+                <t t-foreach="auction_details" t-as="auction">
+                    <div class="BASE">
+                        <form action="/fleet_auctions/bid_form_submit" enctype="multipart/form-data">
+                            <div class="form-data">
+                                <div class="form-group row">
+                                    <label for="auction" class="col-sm-2 col-form-label"><b>Your Bid ID :</b></label>
+                                    <div class="col-sm-10">
+                                        <input type="text" name="auction_id" id="auction" class="form-control-plaintext" t-att-value="auction.id"/>
+                                   </div>
                                </div>
-                           </div>
-                           <!--   pre loaded fields  -->
-                           <div class="form-group row">
-                               <label for="vehiclename" class="col-sm-2 col-form-label"><b>Vehicle Name</b></label>
-                               <div class="col-sm-10">
-                                   <b><input type="text" readonly="True" class="form-control-plaintext" id="vehiclename" t-att-value="auction.vehicle_name_id.name"/></b>
-                               </div>
-                           </div><br/>
-                           <div class="form-group row">
-                               <label for="startprice" class="col-sm-2 col-form-label">Start Price</label>
-                               <div class="col-sm-10">
-                                   <b><input type="text" readonly="True" class="form-control-plaintext" id="startprice" t-att-value="auction.start_price"/></b>
-                               </div>
-                           </div><br/>
-                           <!--    form to fill   -->
-                           <div class="form-group row">
-                               <label for="bid_date" class="col-sm-2 col-form-label">Date</label>
-                               <div class="col-sm-10">
-                                   <input type="date" class="form-control" required="1" id="bid_date" name="bid_date" placeholder="date" style="width: 350px"/>
-                               </div>
-                           </div><br/>
-                           <div class="form-group row">
-                               <label for="bidprice" class="col-sm-2 col-form-label">Bid Price</label>
-                               <div class="col-sm-10">
-                                   <input type="float" class="form-control" required="1" id="bidprice" name="bid_price" placeholder=" Type Bid Amount" style="width: 350px"/>
-                               </div>
-                           </div><br/>
-                           <div class="form-group row">
-                               <label for="phone" class="col-sm-2 col-form-label">Phone</label>
-                               <div class="col-sm-10">
-                                   <input type="integer" class="form-control" required="1" id="phone" name="phone" placeholder="Phone number" style="width: 350px"/>
-                               </div>
-                           </div><br/>
-                          <button type="submit" class="btn btn-primary">Submit</button>
+                               <!--   pre loaded fields  -->
+                               <div class="form-group row">
+                                   <label for="vehiclename" class="col-sm-2 col-form-label"><b>Vehicle Name</b></label>
+                                   <div class="col-sm-10">
+                                       <b><input type="text" readonly="True" class="form-control-plaintext" id="vehiclename" t-att-value="auction.vehicle_name_id.name"/></b>
+                                   </div>
+                               </div><br/>
+                               <div class="form-group row">
+                                   <label for="currentprice" class="col-sm-2 col-form-label">Current Price</label>
+                                   <div class="col-sm-10">
+                                       <b><input type="float" readonly="True" class="form-control-plaintext" id="currentprice" t-att-value="auction.current_bid_price"/></b>
+                                   </div>
+                               </div><br/>
+                               <div class="form-group row">
+                                   <label for="startprice" class="col-sm-2 col-form-label">Start Price</label>
+                                   <div class="col-sm-10">
+                                       <b><input type="float" readonly="True" class="form-control-plaintext" id="startprice" t-att-value="auction.start_price"/></b>
+                                   </div>
+                               </div><br/>
+                               <!--    form to fill   -->
+                               <div class="form-group row">
+                                   <label for="bid_date" class="col-sm-2 col-form-label">Date</label>
+                                   <div class="col-sm-10">
+                                       <input type="date" class="form-control" required="1" id="bid_date" name="bid_date" placeholder="date"/>
+                                   </div>
+                               </div><br/>
+                               <div class="form-group row">
+                                   <label for="bidprice" class="col-sm-2 col-form-label">Bid Price</label>
+                                   <div class="col-sm-10">
+                                       <input type="float" class="form-control" required="1" id="bidprice" name="bid_price" placeholder=" Type Bid Amount"/>
+                                   </div>
+                               </div><br/>
+                               <div class="form-group row">
+                                   <label for="phone" class="col-sm-2 col-form-label">Phone</label>
+                                   <div class="col-sm-10">
+                                       <input type="integer" class="form-control" required="1" id="phone" name="phone" placeholder="Phone number"/>
+                                   </div>
+                               </div><br/>
+                               <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
                        </form>
                    </div>
                </t>
@@ -53,3 +78,6 @@
        </t>
     </template>
 </odoo>
+
+
+<!-- t-options="{'_sql_constraints': ('[('Auction price','CHECK(bid_price > auction.current_bid_price)','Enter higher auction')]')}-->

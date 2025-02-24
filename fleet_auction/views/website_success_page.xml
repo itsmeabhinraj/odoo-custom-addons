@@ -2,14 +2,39 @@
 <odoo>
     <template id="fleet_auction_bid_success" name="Auctions" track="1">
         <t t-call="website.layout">
+            <style>
+                .btn-success {
+                    margin: 1rem;
+                    padding: 1rem 1rem;
+                    text-align: center;
+                }
+                .col-md-6 {
+                    display: inline-block;
+                    padding: 1rem 1rem;
+                    vertical-align: middle;
+                }
+
+                @media (max-width: 650px) {
+                    .btn-success {
+                        width: 80%;
+                        padding:10px;
+                        margin-right: 5px;
+                    }
+                }
+            </style>
             <div class="container text-center mt-5">
                 <div class="alert alert-success">
                     <h2>Your bid has to be submitted successfully</h2>
                     <p>Thank you for participating the auction</p>
                 </div>
-                <div class="mt-4">
-                    <a href="/fleet_auctions" class="btn btn-primary">Home Page</a>
-                    <a t-attf-href="/fleet_auctions/bid_form/{{auction}}" class="btn btn-primary">Add Another Bid</a>
+                <div class="btn-success mt-4">
+<!--                    <div col-12-->
+                    <div class="col-md-6">
+                        <a href="/fleet_auctions" class="btn btn-primary">Home Page</a>
+                    </div>
+                    <div class="col-md-6 p-4">
+                        <a t-attf-href="/fleet_auctions/bid_form/{{auction}}" class="btn btn-primary">Add Another</a>
+                    </div>
                 </div>
             </div>
         </t>

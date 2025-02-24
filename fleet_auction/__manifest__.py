@@ -8,15 +8,10 @@
     'application': True,
     'auto_install': True,
     'license': 'LGPL-3',
-    'depends':['base','hr','mail','contacts','fleet','crm','account','website'],
+    'depends':['base','hr','mail','contacts','fleet','crm','account','website','web'],
     'data': [
         'security/fleet_auction_groups.xml',
         'security/ir.model.access.csv',
-        'data/mail_confirmation_data.xml',
-        'data/ir_cron_data.xml',
-        'data/ir_sequence_data.xml',
-        'wizard/user_cancellation_view.xml',
-        'wizard/fleet_auction_wizard_view.xml',
         'views/fleet_invoice_views.xml',
         'views/fleet_expense_view.xml',
         'views/fleet_vehicle_views.xml',
@@ -28,12 +23,20 @@
         'views/fleet_auction_website_templates.xml',
         'views/fleet_auction_website_menu.xml',
         'views/fleet_auction_menu.xml',
+        'data/mail_confirmation_data.xml',
+        'data/ir_cron_data.xml',
+        'data/ir_sequence_data.xml',
         'report/ir_actions_report.xml',
         'report/fleet_auction_report_template.xml',
+        'wizard/user_cancellation_view.xml',
+        'wizard/fleet_auction_wizard_view.xml',
     ],
     'assets':{
         'web.assets_backend': [
-            '/fleet_auction/static/src/js/**/*',
-        ]   },
-
+            'fleet_auction/static/src/js/action_manager.js',
+        ],
+        'web.assets_frontend': [
+            'fleet_auction/static/src/js/website_fleet_auction.js',
+        ],
+    },
 }

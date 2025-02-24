@@ -4,7 +4,7 @@ import io
 import json
 import xlsxwriter
 from odoo import api, fields, models, _
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import ValidationError , UserError
 from odoo.tools import json_default
 from datetime import datetime
 

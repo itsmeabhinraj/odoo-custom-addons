@@ -140,8 +140,7 @@
                         </page>
                         <page string="Expense">
                             <group>
-                                <field name="expense_ids"
-                                       groups="fleet_auction.fleet_auction_group_manager"/>
+                                <field name="expense_ids" groups="fleet_auction.fleet_auction_group_manager"/>
                             </group>
                         </page>
                         <page string="Other info">
@@ -155,8 +154,7 @@
                 <!--                chatter adding  -->
                 <chatter>
                     <div class="oe_chatter">
-                        <field name="message_follower_ids"
-                               widget="mail_folowers"/>
+                        <field name="message_follower_ids" widget="mail_folowers"/>
                         <field name="activity_ids" widget="mail_activity"/>
                         <field name="message_ids" widget="mail_thread"/>
                     </div>

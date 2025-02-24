@@ -2,70 +2,130 @@
 <odoo>
     <template id="fleet_auction_page" name="Auctions" track="1">
         <t t-call="website.layout">
+            <style>
+                @media (max-width: 767px) {
+                    .auction-banner {
+                        max-height: 80px;
+                        width:100%;
+                    }
+                    .row {
+                        padding: 10px !important;
+                    }
+                    .col-md-8, .col-md-4, .col-md-5 {
+                        padding: 0;
+                    }
+                    .bid-card {
+                        width:100%;
+                        margin-top:100px;
+                    }
+                    .status-card {
+                        width:100%;
+                    }
+                    .content-data {
+                        width:100%;
+                        padding:20px;
+                        margin-top:100px
+                    }
+            </style>
             <t t-foreach="auction_details" t-as="auction">
-                <div class="container">
-                    <div class="row p-4">
-                        <div class="col-md-10" style="height:100px;">
-                            <img t-att-src="image_data_uri(auction.vehicle_image)" class="img-fluid w-100" style="max-height: 300px; object-fit: cover;" alt="Auction Banner"/>
-                        </div>
-                        <div class="col-md-2">
-                            <t t-if="auction.fleet_auction_state !=('success','draft')">
-                                <div class="card p-3" style="width:200px">
-                                    <h5>Place Your Bid</h5>
-                                    <a t-att-href="'/fleet_auctions/bid_form/%s' % auction.id" class="btn btn-primary w-100">Add</a>
+                <t t-if="auction.fleet_auction_state != 'draft'">
+                    <div class="container">
+                        <div class="row p-4">
+                            <div class="auction-banner col-md-10" style="height:100px;">
+                                <img t-att-src="image_data_uri(auction.vehicle_image)" class="img-fluid w-100 auction-banner" style="max-height: 300px; object-fit: cover;" alt="Auction Banner"/>
+                            </div>
+                            <div class="col-12 col-md-2 mt-3 mt-md-0">
+                                <div>
+                                    <t t-if="auction.fleet_auction_state != 'success'">
+                                        <div class="bid-card p-3" style="width:200px">
+                                            <h5>Place Your Bid</h5>
+                                            <a t-att-href="'/fleet_auctions/bid_form/%s' % auction.id" class="btn btn-primary w-100">Add</a>
+                                        </div>
+                                    </t>
                                 </div>
-                            </t>
+                                <div class="bid-card p-3" style="width:200px">
+                                    <a href='/fleet_auctions' class="btn btn-primary w-100" role="button">Back</a>
+<!--                                    <button name="fleet_auction_list" class="btn btn-primary w-100">Add</button>-->
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row p-20" style="padding:200px;">
-                            <div class="col-md-8">
+                        <div class="content-data row p-20" style="padding:200px;">
+                            <div class="col-12 col-md-8">
                                         <!--                            heading -->
                                 <h3><span t-esc="auction.vehicle_name_id.name"></span></h3>
                                 <h5>Brand <span t-esc="auction.brand"/></h5><br/>
                                 <div class="row">
-                                    <div class="col-md-8">
+                                    <div class="col-12 col-md-8">
                                         <p>Auction starts from</p><h5><span t-esc="auction.start_price" t-options="{'widget': 'monetary', 'display_currency': auction.currency_id}"/></h5>
                                     </div>
-                                    <div class="col-md-4">
-                                       <p>Current Auction</p><h5><span t-esc="auction.current_bid_price" t-options="{'widget': 'monetary', 'display_currency': auction.currency_id}"/></h5>
+                                    <div class="col-12 col-md-4">
+                                        <p>Current Auction</p><h5><span t-esc="auction.current_bid_price" t-options="{'widget': 'monetary', 'display_currency': auction.currency_id}"/></h5>
                                     </div>
                                 </div>
                             <!--                            date section-->
-                            <div class="row">
-                                <div class="col-md-5 p-3">
-                                    <h6>Starts</h6>
-                                     <div class="card p-3 text-center" style="width:150px">
-                                         <p><span t-esc="auction.start_date"/></p>
-                                     </div>
+                                <div class="row">
+                                    <div class="col-12 col-md-5 p-3">
+                                        <h6>Starts</h6>
+                                        <div class="card p-3 text-center" style="width:150px">
+                                            <p><span t-esc="auction.start_date"/></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-5 p-3">
+                                        <h6>Ends</h6>
+                                        <div class="card p-3 text-center" style="width:150px">
+                                            <p><span t-esc="auction.end_date"/></p>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-5 p-3">
-                                    <h6>Ends</h6>
-                                     <div class="card p-3 text-center" style="width:150px">
-                                         <p><span t-esc="auction.end_date"/></p>
-                                     </div>
-                                </div>
-                            </div>
-<!--                            won person details-->
-                            <t t-if="auction.fleet_auction_state =='success'">
+        <!--                            won person details-->
+                                <t t-if="auction.fleet_auction_state =='success'">
                                     <b><p>Auction Winner -</p></b><h5><span t-esc="auction.customer_id.display_name"/></h5>
                                     <p>Won Price <span t-esc="auction.won_price"/></p>
-                            </t>
-                        </div>
-<!--                        status of auction -->
-                        <div class="col-md-4">
-                            <div class="card p-3 m-3 text-center" style="width:200px">
-                                <h6>Auction Status</h6>
-                                <div style="width: 180; height:50; background-color:green;border-radius: 10px;">
-                                <div class="my-2"><h6><span class="text-center p-2" style='text-align:center;height:10px;' t-esc="state"/></h6></div>
-                                    </div>
+                                </t>
                             </div>
+    <!--                        status of auction -->
+                            <div class="status-card col-12 col-md-4">
+                                <div class="card p-3 m-3 text-center" style="width:200px">
+                                    <h6>Auction Status</h6>
+                                    <div style="width: 180; height:50; background-color:green;border-radius: 10px;">
+                                        <div class="my-2"><h6><span class="text-center p-2" style='text-align:center;height:10px;' t-esc="state"/></h6></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <div>
+                                        <t t-if="auction.bid_ids">
+                                            <h5>Current your bids</h5>
+                                            <div class="card">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Bid Price</th>
+                                                            <th>Bid Date</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <t t-foreach="request.env['fleet.bid'].search([('auction_id','=',auction.id),('bid_customer_id','=',request.env.user.partner_id.id),('states','!=','draft')])" t-as="user_all_bids">
+                                                            <tr>
+                                                                <td><span t-esc="user_all_bids.bid_price" t-options="{'widget': 'monetary', 'display_currency': auction.currency_id}"/></td>
+                                                                <td><span t-esc="user_all_bids.bid_date"/></td>
+                                                                <td><span t-esc="dict(user_all_bids._fields['states'].selection).get(user_all_bids.states)"/></td>
+                                                            </tr>
+                                                        </t>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </t>
+                                    </div>
+                                </div>
+                             </div>
                         </div>
-                        <div>
-
                         </div>
-                    </div>
-                </div>
+                </t>
             </t>
         </t>
     </template>
 </odoo>
+

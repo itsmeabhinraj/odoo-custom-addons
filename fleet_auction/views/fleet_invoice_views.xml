@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <field name="partner_id" position="after">
                 <group>
-                        <field name="auction_id"/>
+                    <field name="auction_id"/>
                 </group>
             </field>
         </field>

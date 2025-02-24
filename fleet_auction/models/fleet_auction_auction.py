@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 """FLeet auction module handles the auction of the vehicles and the customer bid"""
+from email.policy import default
+
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 
@@ -46,8 +48,9 @@ class FleetAuctionAuction(models.Model):
     best_bid = fields.Float(string="bid")
     same_bid = fields.Char(string="Auction_bid")
     tag_ids = fields.Many2many("crm.tag", string="Tag")
-    bid_count = fields.Integer('count', compute="_compute_bid_count",store=True, default=0)
-    current_bid_price = fields.Monetary('Current price', compute='_compute_current_bid_price',store=True)
+    bid_count = fields.Integer('count', compute="_compute_bid_count", default=0)
+    current_bid_price = fields.Monetary('Current price', compute='_compute_current_bid_price',store=True, default="0")
+    # current_bid_price = fields.Monetary(related='bid_ids.current_bid_price')
     # expense fields
     expense_ids = fields.One2many("fleet.expense",'auction_id')
     expense_id = fields.Many2one('fleet.expense')
@@ -66,33 +69,31 @@ class FleetAuctionAuction(models.Model):
             record.confirm_bid_ids = record.bid_ids.filtered(
                 lambda best_value: best_value.states == "confirmed")
 
-    @api.depends('bid_ids')
+    @api.depends('confirm_bid_ids')
     def _compute_bid_count(self):
         '''computing the count of bids.here i added total count bid_ids'''
-        for record in self:
-            # if record.bid_ids.states == 'confirmed':
-                record.bid_count = len(record.bid_ids)
-                print(record)
-                print(record.bid_count)
+        # for record in self:
+        self.bid_count = len(self.confirm_bid_ids)
 
     @api.depends('bid_ids')
     def _compute_current_bid_price(self):
-        if self.bid_ids:
-            sorted_value = self.bid_ids.sorted(lambda a: a.bid_price, reverse=True)
+        if self.confirm_bid_ids:
+            sorted_value = self.confirm_bid_ids.sorted(lambda a: a.bid_price, reverse=True)
             self.current_bid_price = sorted_value[0].bid_price
+            print('flee',self.current_bid_price)
 
     @api.depends('expense_ids.expense_amount')
     def _compute_total_expense(self):
-        """computing the totat expenses in the . each auction"""
+        """computing the totat expenses in the . each auction.
+        this compute method accessed without api because of record.expense_ids.mapped('expense_amount') always
+         retrive related expense dynamically.And whenver access the expense field unneccecary compute method run."""
         for record in self:
             record.total_expense = sum(record.expense_ids.mapped('expense_amount'))
-    #         this compute method accessed without api because of record.expense_ids.mapped('expense_amount') always
-    #         retrive related expense dynamically.And whenver access the expense field unneccecary compute method run.
 
     def _compute_count_invoice(self):
         '''computing number of invoice created for this auction'''
-        for record in self:
-            record.count_invoice = (self.env['account.move'].search_count([("auction_id", '=', self.id)]))
+        # for record in self:
+        self.count_invoice = (self.env['account.move'].search_count([("auction_id", '=', self.id)]))
 
     @api.constrains('start_date', 'end_date')
     def date_constrains(self):
@@ -109,12 +110,13 @@ class FleetAuctionAuction(models.Model):
 
     def action_total_bid_count(self):
         '''bid smart button action name .viewing of smart tab'''
+        print(self.id)
         return {
             'type': 'ir.actions.act_window',
             'name': 'Bids',
             'view_mode': 'list',
             'res_model': 'fleet.bid',
-            'domain': [('auction_id', '=', self.id)],
+            'domain': [('auction_id', '=', self.id),('states','=','confirmed')],
             'context': "{'create': False}"
         }
 
@@ -126,7 +128,7 @@ class FleetAuctionAuction(models.Model):
         if self.fleet_auction_state == 'canceled':
             raise UserError("Error--- already canceled")
         self.fleet_auction_state = 'confirmed'
-    # original code
+
     def action_auction_end(self):
         """while End Auction button triggered state changed to success"""
         if self.bid_ids:
@@ -136,16 +138,6 @@ class FleetAuctionAuction(models.Model):
             self.customer_id = sorted_value[0].bid_customer_id
         else:
             raise UserError("Please add a bid")
-    #
-    # def action_auction_end(self):
-    #     """while End Auction button triggered state changed to success"""
-    #     if self.bid_ids:
-    #         # self.fleet_auction_state = 'success'
-    #         sorted_value = self.bid_ids.sorted(lambda a: a.bid_price, reverse=True)
-    #         self.won_price = sorted_value[0].bid_price
-    #         self.customer_id = sorted_value[0].bid_customer_id
-    #     else:
-    #         raise UserError("Please add a bid")
 
     def action_auction_cancel(self):
         """while Cancel auction button triggered state changes to canceled"""
@@ -214,3 +206,8 @@ class FleetAuctionAuction(models.Model):
         for auction in self:
             template = self.env.ref('fleet_auction.confirmation_mail_template')
             template.send_mail(auction.id, force_send=True)
+
+    _sql_constraints = [
+            ('check_auction_amount', 'CHECK(bid_ids.bid_price > current_bid_price)',
+             'The price should be higher')
+    ]
