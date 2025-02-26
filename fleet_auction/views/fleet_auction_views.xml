@@ -102,6 +102,8 @@
                         <group>
                             <field name="currency_id"/>
                             <field name="start_price"/>
+                            <field name="date_of_birth"/>
+                            <field name="age"/>
                             <field name="won_price" invisible="not fleet_auction_state == 'success'"/>
                             <field name="customer_id"
                                    invisible="fleet_auction_state not in ('success','invoiced')"/>

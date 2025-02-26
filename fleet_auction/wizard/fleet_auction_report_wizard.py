@@ -36,8 +36,8 @@ class FleetAuctionReportWizard(models.TransientModel):
                 raise ValidationError(_("Date should be apply before end"))
 
     def fetch_data_report(self):
-        '''Fetching datas based our need from database using sql queries.And then apply comditions.Also
-        filter data based on the data entered in wizard window'''
+        '''Fetching datas based on our need from database using sql queries.And then apply comditions.Also
+        filter data based on the data entered in wizard window. '''
         query = f"""SELECT rp.name AS customer_name,
                   fb.bid_customer_id AS bid_customer,
                   fb.bid_price AS bid_amount,
@@ -66,7 +66,10 @@ class FleetAuctionReportWizard(models.TransientModel):
             query += f"""AND rp.id = '{self.customer_id.id}'"""
         if self.responsible_id:
             query += f"""AND fb.user_id = '{self.responsible_id.id}'"""
+        #if you want to get some records or perform any database operation like SELECT, INSERT..
+        #you can use execute to send that SQL query to the database.
         self.env.cr.execute(query)
+        #fetches all the results from the  executed SQL query and stores reports as list of dict
         reports = self.env.cr.dictfetchall()
         if not reports:
             raise UserError(_('No result found!'))

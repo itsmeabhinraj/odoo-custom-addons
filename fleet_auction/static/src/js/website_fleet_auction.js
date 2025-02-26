@@ -5,26 +5,40 @@ publicWidget.registry.WebsiteFleetAuction = publicWidget.Widget.extend({
     selector: '.BASE',
     events: {
         'change #bidprice': '_onChangeBid',
+        'click #dismiss': '_onCloseClick',
     },
+    init() {
+       this._super(...arguments);
+       this.orm = this.bindService("orm");
+   },
+   setup() {
+       super.setup();
+       this.location = useService("location");
+       },
     _onChangeBid: function(){
         console.log('function reached')
+        var location = this.el.querySelector('#location_temp'); //modal
         var bid_price_value = $('#bidprice').val();
         var current_bid_price = $('#currentprice').val();
         var start_price = $('#startprice').val();
-        console.log('current price', current_bid_price)
-        console.log('Bid price', bid_price_value)
+//       converting into float type
+        var bid_price_value1 = parseFloat(bid_price_value)
+        var start_price1 = parseFloat(start_price)
+//        conditions starts here
         if(bid_price_value <= current_bid_price){
-            alert('Bid must be higher than current bid price');
+              location.style.display='block';
         }
         if(isNaN(bid_price_value)){
-            alert('Enter correct amount');
+            location.style.display='block';
             $('#bidprice').val("");
         }
+        if(bid_price_value1 <= start_price1){
+            location.style.display='block';
+        }
+    },
+    //hide modal when close the wizard
+    _onCloseClick(ev){
+      var location = this.el.querySelector('#location_temp');
+      location.style.display='none';                  //hide modal
     },
 });
-
-
-//  if(bid_price_value <= start_price){
-//            alert('Bid must be higher than current bid price');
-//        }
-

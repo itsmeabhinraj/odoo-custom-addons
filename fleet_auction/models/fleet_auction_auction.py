@@ -2,6 +2,8 @@
 """FLeet auction module handles the auction of the vehicles and the customer bid"""
 from email.policy import default
 
+from reportlab.graphics.transform import inverse
+
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import ValidationError, UserError
 
@@ -59,7 +61,19 @@ class FleetAuctionAuction(models.Model):
     invoice_id = fields.Many2one('account.move')
     status_invoice = fields.Selection(related='invoice_id.status_in_payment')
     count_invoice = fields.Integer('Invoice', compute="_compute_count_invoice")
+    date_of_birth = fields.Date(string="Date")
+    age = fields.Integer('age',compute="_compute_age",inverse='_inverse_date',readonly=False)
 
+    @api.depends('date_of_birth')
+    def _compute_age(self):
+        today = fields.datetime.today()
+        self.age=today.year - self.date_of_birth.year
+
+    def _inverse_date(self):
+        today = fields.datetime.today()
+        birth_year = today.year - self.age
+        self.date_of_birth = fields.datetime(birth_year, 1, 1)
+        print('age')
 
     @api.depends('bid_ids.states')
     def _compute_confirm_bids(self):

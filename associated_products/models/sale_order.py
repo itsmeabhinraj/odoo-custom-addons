@@ -16,7 +16,7 @@ class SaleOrder(models.Model):
                         Command.create({
                             'order_id': self.id,
                             'product_id': product.id,
-                            'product_uom_qty': 1,
+                               'product_uom_qty': 1,
                             'price_unit': product.lst_price,})]
         else:
             asso_prod_ids = self.partner_id.associated_products_ids

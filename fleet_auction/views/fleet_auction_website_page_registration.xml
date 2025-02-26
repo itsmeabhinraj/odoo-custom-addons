@@ -41,7 +41,7 @@
                                <div class="form-group row">
                                    <label for="currentprice" class="col-sm-2 col-form-label">Current Price</label>
                                    <div class="col-sm-10">
-                                       <b><input type="float" readonly="True" class="form-control-plaintext" id="currentprice" t-att-value="auction.current_bid_price"/></b>
+                                       <b><input type="float" readonly="True" class="form-control-plaintext" id="currentprice" default="0.00" t-att-value="auction.current_bid_price"/></b>
                                    </div>
                                </div><br/>
                                <div class="form-group row">
@@ -69,9 +69,36 @@
                                        <input type="integer" class="form-control" required="1" id="phone" name="phone" placeholder="Phone number"/>
                                    </div>
                                </div><br/>
-                               <button type="submit" class="btn btn-primary">Submit</button>
+                               <button type="submit" id="submitted" class="btn btn-primary">Submit</button>
                             </div>
                        </form>
+                        <!--                                modal for validation-->
+                       <div id="location_temp" style="display:none; position:absolute;">
+                           <div class="location_modal_container"
+                                style="position: fixed;left: 30%;height: 30%;width: 40%;background: rgba(1,0,0,0.2);top: 20%;display: flex;align-items: center;justify-content: center;">
+                               <div class="modal-dialog">
+                                   <div class="modal-content" style="width: 400px;">
+                                       <div class="modal-body" id="loc_modal">
+                                           <div class="row s_col_no_resize">
+                                               <label class="col-form-label col-sm-auto s_website_form_label" for="studio1">
+                                                   <h3><span>Bid must be higher than current bid price</span></h3>
+                                               </label>
+                                           </div>
+                                           <br/>
+                                       </div>
+                                       <div class="modal-footer">
+                                           <button type="button"
+                                                   style="background: black;color: white;"
+                                                   class="btn btn-default"
+                                                   id="dismiss"
+                                                   data-dismiss="modal">
+                                               Close
+                                           </button>
+                                       </div>
+                                   </div>
+                               </div>
+                           </div>
+                       </div>
                    </div>
                </t>
            </div>
