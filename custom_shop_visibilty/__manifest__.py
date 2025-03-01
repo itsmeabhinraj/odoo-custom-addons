@@ -6,7 +6,7 @@
     'application': True,
     'installable': True,
     'auto_install': True,
-    'depends': ['base','website_sale','sale_management'],
+    'depends': ['base','website_sale','website','sale_management'],
     'data': [
         'views/res_partner_view.xml',
     ],

@@ -7,15 +7,11 @@
         <field name="arch" type="xml">
             <notebook position="inside">
                 <page string="Visible product">
-                    <group><field name="demo_field"/></group>
+<!--                    <group><field name="demo_field"/></group>-->
                     <group><field name="allowed_products_ids" widget="many2many_tags"/></group>
+                    <group><field name="allowed_category_ids" widget="many2many_tags"/></group>
                 </page>
             </notebook>
         </field>
     </record>
-<!--    <record id="customer_inherit" model="ir.actions.act_window">-->
-<!--        <field name="name">Customers</field>-->
-<!--        <field name="res_model">res.partner</field>-->
-<!--        <field name="view_mode">list,form</field>-->
-<!--    </record>-->
 </odoo>
