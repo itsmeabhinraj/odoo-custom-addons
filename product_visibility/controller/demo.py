@@ -28,7 +28,7 @@ class WebsiteShop(WebsiteSale):
             chosen_category_id = res.qcontext["category"].id
             for rec in product_template_object:
                 if chosen_category_id in rec.public_categ_ids.ids:
-                    product_template_list.aqppend(rec.id)
+                    product_template_list.append(rec.id)
             product_template = request.env["product.template"].sudo().browse(product_template_list)
 
             res.qcontext["products"] = product_template

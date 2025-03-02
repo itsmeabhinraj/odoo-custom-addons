@@ -47,9 +47,11 @@
 #
 #
 # #
+from gevent._util import Lazy
 from validators import domain
 from werkzeug.exceptions import NotFound
 
+from addons.website_sale.controllers.main import TableCompute
 from odoo import http
 from odoo.http import request, route
 from odoo.addons.website_sale.controllers import main
@@ -106,6 +108,7 @@ class WebsiteSaleInherit(WebsiteSale):
         for rec in allowed_products_ids:
             x[rec.id] = {'price_reduce': rec.list_price}
         res.qcontext["products_prices"] = x
+
         domain = []
         if user.partner_id.allowed_products_ids:
             print("reached")
@@ -121,15 +124,70 @@ class WebsiteSaleInherit(WebsiteSale):
             #         raise NotFound()
             # else:
             #     category = Category
-            if category:
-                domain.append(('categ_id', '=', category.id))
+
+            # if category:
+            #     domain.append(('categ_id', '=', category.id))
             if search:
                 domain.append(('name', 'ilike', search))
             products = request.env['product.template'].search(domain)
             res.qcontext['products']= products
+            res.qcontext['categories'] = products.public_categ_ids
+            res.qcontext['attributes'] = products.attribute_line_ids.attribute_id
+            res.qcontext['search_product'] = products
+            res.qcontext['search_count'] = len(products)
             ppg = res.qcontext['ppg']
             ppr = res.qcontext['ppr']
             bins = lazy(lambda: main.TableCompute().process(products, ppg, ppr))
+
+            x = res.qcontext.get("products_prices")
+            for rec in products:
+                x[rec.id] = {'price_reduce': rec.list_price}
+            res.qcontext["products_prices"] = x
+            # category
+            product_template_list = []
+            if res.qcontext["category"]:
+                chosen_category_id = res.qcontext["category"].id
+                for rec in products:
+                    if chosen_category_id in rec.public_categ_ids.ids:
+                        product_template_list.append(rec.id)
+                product_template = request.env["product.template"].sudo().browse(product_template_list)
+
+                res.qcontext["products"] = product_template
+                res.qcontext["search_product"] = product_template
+                res.qcontext["search_count"] = len(product_template)
+                res.qcontext["bins"] = Lazy(lambda: TableCompute().process(product_template,
+                    res.qcontext.get("ppg"),
+                    res.qcontext.get("ppp")
+                ))
+            # Attribute applied
+            attribute_list = []
+            if res.qcontext["attrib_set"]:
+                for val in res.qcontext["attrib_set"]:
+                    attribute_list.append(val)
+
+            for rec in products.attribute_line_ids:
+                for x in rec.value_ids.ids:
+                    if x in attribute_list:
+                        products = products.filtered(
+                            lambda l: x in l.attribute_line_ids.value_ids.ids)
+                        res.qcontext["products"] = products
+                        res.qcontext["search_product"] = products
+                        res.qcontext["search_count"] = len(products)
+            #     pager
+            website = request.env["website"].get_current_website()
+            page = website.pager(url='/shop', total=res.qcontext.get("search_count"), page=page,
+                                 step=res.qcontext.get("ppg"), scope=res.qcontext.get("ppg"), url_args=post)
+            # offset = page["offset"]
+            # products_on_page = res.qcontext.get("search_product")[offset:offset + res.qcontext.get("ppg")]
+            #
+            res.qcontext["ppg"] = page
+            # res.qcontext["bins"] = Lazy(lambda: TableCompute().process(
+            #         products_on_page,
+            #         res.qcontext.get("ppg"),
+            #         res.qcontext.get("ppp")
+            #     )
+            # )
+
             for product in user.allowed_products_ids:
                 res.qcontext.update({'bins':bins,'products':products,'category': product.public_categ_ids,})
                 print('print',res.qcontext['bins'])
