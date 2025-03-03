@@ -1,52 +1,3 @@
-# # from odoo import http
-# # from odoo.http import request
-# # from odoo.addons.website_sale.controllers.main import WebsiteSale
-# # from odoo.addons.website_sale.controllers.main import TableCompute
-# # from odoo.tools import lazy
-# #
-# # class WebsiteSaleInherit(WebsiteSale):
-# #     @http.route()
-# #     def shop(self, category=None, ppg=False):
-# #         """Function defined for showing only the selected
-# #          products for thr logged in customer"""
-# #         res = super(WebsiteSaleInherit, self).shop(self, category=category)
-# #         user = request.env.user.partner_id
-# #         categ = user.allowed_category_ids
-# #         product = request.env['product.template'].search(
-# #             [('public_categ_ids', 'in', categ.ids)])
-# #         p_count = request.env['product.template'].search_count(
-# #             [('public_categ_ids', 'in', categ.ids)])
-# #         res.qcontext['pager']['page_count'] = 1
-# #
-# #
-# #         pricelist = request.env['product.pricelist'].browse(request.session.get('website_sale_current_pl'))
-# #         products_prices = lazy(lambda: product._get_sales_prices(pricelist))
-# #         if user.allowed_products_ids:
-# #             bins = lazy(lambda: TableCompute().process(user.product_ids, ppg=1))
-# #             for product in user.allowed_products_ids:
-# #                 res.qcontext.update({
-# #                     'products': product,
-# #                     'category': product.public_categ_ids,
-# #                     'bins': bins,
-# #                 })
-# #         elif user.allowed_category_ids:
-# #             categ_bins = lazy(lambda: TableCompute().process(product, ppg))
-# #             res.qcontext.update({
-# #                 'search_product': product,
-# #                 'products': product,
-# #                 'categories': user.allowed_category_ids,
-# #                 'search_count': p_count,
-# #                 'pricelist': pricelist,
-# #                 'get_product_prices': lambda product: lazy(
-# #                     lambda: products_prices[product.id]),
-# #                 'bins': categ_bins,
-# #             })
-# #         return res
-#
-#
-#
-#
-# #
 from gevent._util import Lazy
 from validators import domain
 from werkzeug.exceptions import NotFound
@@ -60,25 +11,26 @@ from odoo.tools import lazy
 
 class WebsiteSaleInherit(WebsiteSale):
     # def _get_search_options(
-    #     self, category=None, attrib_values=None, tags=None, min_price=0.0, max_price=0.0,
-    #     conversion_rate=1,**post):
-    #     options = super()._get_search_options(category, attrib_values, min_price, max_price, tags, conversion_rate, **post)
-    #     print('options',options)
-    #     partner = request.env.user.partner_id
-    #     allowed_product_ids = partner.allowed_products_ids.ids if partner and partner.allowed_products_ids else []
+    #     self, category=None, attrib_values=None, min_price=0.0, max_price=0.0,
+    #     conversion_rate=1, allowed_product_ids=None, **post):
+    #     """ Extend search options to filter products by allowed_product_ids """
+    #     options = super()._get_search_options(category, attrib_values, min_price, max_price, conversion_rate, **post)
+    #     # Add filtering by allowed products if applicable
     #     if allowed_product_ids:
-    #          options['allowed_product_ids'] = allowed_product_ids
+    #         print(allowed_product_ids)
+    #         options['allowed_product_ids'] = allowed_product_ids
     #     return options
     #
     # def _shop_lookup_products(self, attrib_set, options, post, search, website):
+    #      """ Extend _shop_lookup_products to filter based on allowed products """
     #      fuzzy_search_term, product_count, search_result = super()._shop_lookup_products(attrib_set, options, post, search, website)
+    #      # Filter products based on allowed_product_ids if available
     #      allowed_product_ids = options.get('allowed_product_ids')
     #      if allowed_product_ids:
     #         search_result = search_result.filtered(lambda p: p.id in allowed_product_ids)
     #
     #      return fuzzy_search_term, len(search_result), search_result
 
-    # ==========
     @route([
         '/shop',
         '/shop/page/<int:page>',
@@ -86,49 +38,33 @@ class WebsiteSaleInherit(WebsiteSale):
         '/shop/category/<model("product.public.category"):category>/page/<int:page>',
     ], type='http', auth="public", website=True)
     def shop(self, page=0, category=None, search='', min_price=0.0, max_price=0.0, ppg=False, **post):
-
-
         res = super(WebsiteSaleInherit, self).shop(page, category, search, min_price, max_price, ppg, **post)
         user = request.env.user
         print('user',user)
         partner = request.env.user.partner_id if request.env.user else None
-        res_user_object = request.env['res.partner'].sudo().browse(request.uid)
+        # res_user_object = request.env['res.partner'].sudo().browse(request.uid)
         # allowed_products_ids = partner.allowed_products_ids.ids if partner and partner.allowed_products_ids else None
-        allowed_products_ids = res_user_object.allowed_products_ids
-        # apply conditions for filter products
-        # product_template_object
+        allowed_products_ids = partner.allowed_products_ids
         print(res.qcontext)
-        # 'get_product_prices': lambda product: lazy(lambda: products_prices.get(product.id, {})),
-        print('hai',res.qcontext.get("get_product_prices"))
-        print('hai',res.qcontext.get("product_prices"))
-        pricelist = request.env['product.pricelist'].browse(
-            request.session.get('website_sale_current_pl'))
-        products_prices = lazy(lambda: product._get_sales_prices(pricelist))
-        x = res.qcontext.get("products_prices")
+        website = request.env['website'].get_current_website()
+        pricelist = website.pricelist_id
+        # products_prices = lazy(lambda: product._get_sales_prices(pricelist))
+
+        products_prices = res.qcontext.get("products_prices")
+        print('product_prices',products_prices)
         for rec in allowed_products_ids:
-            x[rec.id] = {'price_reduce': rec.list_price}
-        res.qcontext["products_prices"] = x
+            products_prices[rec.id] = {'price_reduce': rec.list_price}
+        res.qcontext["products_prices"] = products_prices
 
         domain = []
         if user.partner_id.allowed_products_ids:
             print("reached")
             # products = request.env['product.template'].search([('id','in',user.partner_id.allowed_products_ids.ids)])
             domain.append(('id','in',user.partner_id.allowed_products_ids.ids))
-            # print('products demo',products)
-            # res.qcontext['products'] = products
-            # Category = request.env['product.public.category']
-            # if category:
-            #     category = Category.search([('id', '=', int(category))], limit=1)
-            #     print(category)
-            #     if not category or not category.can_access_from_current_website():
-            #         raise NotFound()
-            # else:
-            #     category = Category
 
-            # if category:
-            #     domain.append(('categ_id', '=', category.id))
             if search:
                 domain.append(('name', 'ilike', search))
+
             products = request.env['product.template'].search(domain)
             res.qcontext['products']= products
             res.qcontext['categories'] = products.public_categ_ids
@@ -139,17 +75,16 @@ class WebsiteSaleInherit(WebsiteSale):
             ppr = res.qcontext['ppr']
             bins = lazy(lambda: main.TableCompute().process(products, ppg, ppr))
 
-            x = res.qcontext.get("products_prices")
+            products_prices = res.qcontext.get("products_prices")
             for rec in products:
-                x[rec.id] = {'price_reduce': rec.list_price}
-            res.qcontext["products_prices"] = x
+                products_prices[rec.id] = {'price_reduce': rec.list_price}
+            res.qcontext["products_prices"] = products_prices
             # category
             product_template_list = []
             if res.qcontext["category"]:
-                chosen_category_id = res.qcontext["category"].id
-                for rec in products:
-                    if chosen_category_id in rec.public_categ_ids.ids:
-                        product_template_list.append(rec.id)
+                for record in products:
+                    if res.qcontext["category"].id in record.public_categ_ids.ids:
+                        product_template_list.append(record.id)
                 product_template = request.env["product.template"].sudo().browse(product_template_list)
 
                 res.qcontext["products"] = product_template
@@ -165,33 +100,46 @@ class WebsiteSaleInherit(WebsiteSale):
                 for val in res.qcontext["attrib_set"]:
                     attribute_list.append(val)
 
-            for rec in products.attribute_line_ids:
-                for x in rec.value_ids.ids:
-                    if x in attribute_list:
-                        products = products.filtered(
-                            lambda l: x in l.attribute_line_ids.value_ids.ids)
+            for record in products.attribute_line_ids:
+                for value in record.value_ids.ids:
+                    if value in attribute_list:
+                        products = products.filtered(lambda l: value in l.attribute_line_ids.value_ids.ids)
                         res.qcontext["products"] = products
                         res.qcontext["search_product"] = products
                         res.qcontext["search_count"] = len(products)
-            #     pager
+
+            # pager
             website = request.env["website"].get_current_website()
             page = website.pager(url='/shop', total=res.qcontext.get("search_count"), page=page,
                                  step=res.qcontext.get("ppg"), scope=res.qcontext.get("ppg"), url_args=post)
-            # offset = page["offset"]
-            # products_on_page = res.qcontext.get("search_product")[offset:offset + res.qcontext.get("ppg")]
-            #
+            offset = page["offset"]
+            products_on_page = res.qcontext.get("search_product")[offset:offset + res.qcontext.get("ppg")]
             res.qcontext["ppg"] = page
-            # res.qcontext["bins"] = Lazy(lambda: TableCompute().process(
-            #         products_on_page,
-            #         res.qcontext.get("ppg"),
-            #         res.qcontext.get("ppp")
-            #     )
-            # )
-
+            res.qcontext["bins"] = Lazy(lambda: TableCompute().process(products_on_page,
+                    res.qcontext.get("ppg"),
+                    res.qcontext.get("ppp")
+                )
+            )
             for product in user.allowed_products_ids:
                 res.qcontext.update({'bins':bins,'products':products,'category': product.public_categ_ids,})
-                print('print',res.qcontext['bins'])
+            print('print',res.qcontext['bins'])
         return res
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 #
 #
