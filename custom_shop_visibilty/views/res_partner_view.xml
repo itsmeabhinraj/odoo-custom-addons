@@ -7,7 +7,6 @@
         <field name="arch" type="xml">
             <notebook position="inside">
                 <page string="Visible product">
-<!--                    <group><field name="demo_field"/></group>-->
                     <group><field name="allowed_products_ids" widget="many2many_tags"/></group>
                     <group><field name="allowed_category_ids" widget="many2many_tags"/></group>
                 </page>

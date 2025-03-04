@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-\
 {
     'name': 'Product visibilty',
-    'version': '1.2',
+    'version': '18.0.1.2',
     'category': 'shop',
     'application': True,
     'installable': True,
