@@ -9,7 +9,8 @@ class WebsiteSaleInherit(WebsiteSale):
 
     def _shop_lookup_products(self, attrib_set, options, post, search, website):
          """ Extend _shop_lookup_products to filter based on allowed products and allowed categories """
-         fuzzy_search_term, product_count, search_result = super()._shop_lookup_products( attrib_set, options, post, search, website)
+         fuzzy_search_term, product_count, search_result = super()._shop_lookup_products( attrib_set, options,
+                                                                                          post, search, website)
          user = request.env.user
          if user and user.partner_id:
              partner = user.partner_id
