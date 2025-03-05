@@ -10,7 +10,7 @@ class WebsiteSearchableMixinInherit(models.AbstractModel):
 
     @api.model
     def _search_fetch(self, search_detail, search, limit, order):
-         """By using _search_fetch() , we can override it and add additional domain as our purpose."""
+         """By using _search_fetch() , we can override it and add ad    ditional domain as our purpose."""
          results,count = super()._search_fetch(search_detail, search, limit, order)
          user = self.env.user
          if user.partner_id.allowed_products_ids:

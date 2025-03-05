@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_product_brand.Orderline" t-inherit="point_of_sale.Orderline" t-inherit-mode="extension">
+        <xpath expr="//div[hasclass('product-name d-inline-block flex-grow-1 fw-bolder pe-1 text-truncate')]" position="inside">
+<!--            <t t-if="props.line.brand">-->
+<!--                <div class="product-brand">-->
+                    <t t-esc="'Brand : ' + props.line.product_brand"/>
+<!--                </div>-->
+<!--            </t>-->
+        </xpath>
+    </t>
+</templates>
