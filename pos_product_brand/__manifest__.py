@@ -10,10 +10,9 @@
     'depends': ['base','sale_management','point_of_sale'],
     'data': [
         'views/product_template_views.xml',
-        'views/orderline.xml',
     ],
     'assets': {
-        'pos_product_brand._assets_pos': [
+        'point_of_sale._assets_pos': [
             'pos_product_brand/static/src/xml/orderline.xml',
             'pos_product_brand/static/src/js/pos_order_line.js',
         ],

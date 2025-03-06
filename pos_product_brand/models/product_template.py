@@ -1,10 +1,11 @@
+# -*- coding: utf-8 -*-
 """For adding a product brand field for pos"""
 from odoo import api,fields,models
 
 class ProductTemplate(models.Model):
     """inheriting product module for add a brand field"""
 
-    _inherit = 'product.template'
+    _inherit = 'product.product'
 
     product_brand = fields.Char("Brand")
 
