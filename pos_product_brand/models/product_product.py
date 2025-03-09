@@ -2,7 +2,7 @@
 """For adding a product brand field for pos"""
 from odoo import api,fields,models
 
-class ProductTemplate(models.Model):
+class ProductProduct(models.Model):
     """inheriting product module for add a brand field"""
 
     _inherit = 'product.product'

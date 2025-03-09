@@ -9,7 +9,7 @@
     'auto_install': True,
     'depends': ['base','sale_management','point_of_sale'],
     'data': [
-        'views/product_template_views.xml',
+        'views/product_product_views.xml',
     ],
     'assets': {
         'point_of_sale._assets_pos': [
