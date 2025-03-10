@@ -10,5 +10,11 @@
     'depends': ['base','sale_management','point_of_sale'],
     'data': [
         'views/pos_category_views.xml',
+        # 'views/pos_config_settings_view.xml',
     ],
+    'assets': {
+        'point_of_sale._assets_pos': [
+            'pos_category_discount/static/src/js/pos_store.js',
+        ],
+    },
 }
