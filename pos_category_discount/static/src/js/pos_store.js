@@ -1,26 +1,26 @@
+/** @odoo-module **/
 import { PosStore } from "@point_of_sale/app/store/pos_store";
 import { patch } from "@web/core/utils/patch";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 
 patch(PosStore.prototype, {
     async pay() {
-        // If discount limit setting is disabled, proceed with payment
-//        if (!this.config.enable_discount_limits) {
-//            return super.pay();
-//        }
-
-//        console.log(this.get_order());
-//        console.log("Welcome pos page")
         var orderlines = this.get_order().get_orderlines();
-//        console.log(orderlines)
+//        var product = line.get_product();
+//        var product_categories = product.pos_categ_ids;
         var categoryDiscounts = {};
-//        var discount_limited_category =
-//        this.models["pos.category"].getFirst().pos_category_id.name;
+        var totalDiscountedPrice = 0
+        var totalOriginalPrice = 0
+        //iterate through orderlines
         orderlines.forEach((line) => {
-            //get each product
+//            var categories = [];
+//            line.product_id.pos_categ_ids.forEach((category) => {
+//                categories.push(category.name);
+//            });
+//            console.log('categoried',categories);
             console.log('orderlines',orderlines);
             var product = line.get_product();
-            console.log('product',product);
+            console.log('product',product)
             //product discount - in %
             var line_discount = line.get_discount();
             console.log("line_discount",line_discount);
@@ -28,44 +28,97 @@ patch(PosStore.prototype, {
             var unit_qty = line.get_quantity();
             console.log('unit',unit_qty)
 
-            var price_without_discount = line.getUnitDisplayPriceBeforeDiscount();
+            var price_without_discount = line.getUnitDisplayPriceBeforeDiscount() * unit_qty;
             console.log('price_without_disco',price_without_discount);
-//            var without_discount =
-            var get_total_cost = line.get_total_cost();
-            console.log("get_total_cost",get_total_cost);
 
-            var unit_price = line.price_unit;
-            console.log('unit_price',unit_price);
+            var price_subtotal = line.price_subtotal;
+            console.log('price_subtotal',price_subtotal);
 
             var product_categories = product.pos_categ_ids;
             console.log("product_categories",product_categories);
+            //final price of product after tax (if discounts appiled , then it also
+            var final_orderline_price = price_without_discount - (price_without_discount * line_discount/100)
+            console.log("discounted_price",final_orderline_price)
+            //iterate through category
+            product_categories.forEach((category_id) => {
+                var category_id = category_id.id;
+                console.log("categ name",category_id)
+                // If the category doesn't exist in the dictionary, initialize it
+                if (!categoryDiscounts[category_id]) {
+                    categoryDiscounts[category_id] = {
+                        category_name: category_id,
+                        total_discounted_price: 0,
+                        total_original_price:0
+                    };
+                }
+                 // Add the total cost and actual price of this product to the corresponding category
+                categoryDiscounts[category_id].total_discounted_price += final_orderline_price;
+                categoryDiscounts[category_id].total_original_price += price_without_discount;
 
-//            product_categories.forEach((category) => {
-//                var categ_config = this.pos.categories_by_id[category];
-//                if (categ_config && categ_config.has_discount_limit) {
-//                    var discount_type = categ_config.discount_type; // 'fixed' or 'percentage'
-//                    console.log(discount_type)
-//                    var discount_limit = categ_config.discount_limit; // Limit value
-//                    console.log(discount_limit)
-////
-////                    // Initialize category tracking if not set
-//                    if (!categoryDiscounts[category]) {
-//                        categoryDiscounts[category] = {
-//                            discount_amount: 0,
-//                            total_unit_price: 0
-//                        };
-//                    }
-//
-////                    // Compute applied discount for the category
-//                    var applied_discount = (line_price * line_discount) / 100;
-//                    categoryDiscounts[category].discount_amount += applied_discount;
-//                    categoryDiscounts[category].total_unit_price += line_price / ((100 - line_discount) / 100);
-//                }
-//            });
+                console.log("categoryDiscounts",categoryDiscounts)
+                // Object { 1: {…}, 2: {…}, 3: {…} }
+                console.log("categoryDiscounts",categoryDiscounts[category_id])
+                // Object { category_name: undefined, total_discounted_price: 207.86999999999998,
+                // total_original_price: 277.15999999999997 }
+            });
+            for (var category_id in categoryDiscounts) {
+                const CategoryId = categoryDiscounts[category_id]
+                totalDiscountedPrice = CategoryId.total_discounted_price
+                totalOriginalPrice = CategoryId.total_original_price
+                const category = CategoryId.category_name;
+                console.log("category",category)
+
+                const discountType = category.discount_type;
+                console.log('discountType',discountType)
+                var PosCategory = this.models["pos.category"].getFirst();
+                console.log("PosCategory",PosCategory)
+//                var heloo = PosCategory.discount_type
+//                console.log("heloo",heloo)
+            }
+
         });
+//        iterate over categoryDiscount dict to access total discount price and original price
+//        then compare it with allowed price
 
-//           });
+//        for (var category_id in categoryDiscounts) {
+//            const CategoryId = categoryDiscounts[category_id]
+////            console.log("current_discount_total",totalDiscountedPrice)
+//            totalDiscountedPrice = CategoryId.total_discounted_price
+//            totalOriginalPrice = CategoryId.total_original_price
+//            const category = CategoryId.category_name;
+//            console.log("category",category)
+//
+//            var PosCategory = this.models["pos.category"].pos_categ_ids;
+//            console.log("PosCategory",PosCategory)
+//            var FixedDiscountLimit = this.models["pos.category"].getFirst().fixed_discount
+//            console.log("PosCategory1",FixedDiscountLimit)
+//            console.log("this",this)
+//            const discountType = product_categories.discount_type;
+//            console.log("discountType",discountType)
+//            const FixedDiscountLimit = product_categories.fixed_discount;
+//            console.log("FixedDiscountLimit",FixedDiscountLimit)
+//            const PercentageDiscountLimit = product_categories.percent_discount;
+//            console.log("PercentageDiscountLimit",PercentageDiscountLimit)
+//
+//
+//            console.log("total_discount_total",totalDiscountedPrice)
+//            console.log("current_pricet_total",totalOriginalPrice)
+//            if (discount_type == 'fixed') {
+//                var AllowedDiscount = totalOriginalPrice - FixedDiscountLimit
+//                console.log("AllowedDiscount",AllowedDiscount)
+//                if (AllowedDiscount < totalDiscountedPrice) {
+//                    console.log('error')
+//                };
+//            }
+//            else if (discount_type == 'percent_discount') {
+//                var AllowedDiscount = totalOriginalPrice - (totalOriginalPrice * PercentageDiscountLimit)/100
+//                console.log("AllowedDiscount",AllowedDiscount)
+//                if (AllowedDiscount < totalDiscountedPrice) {
+//                    console.log('error')
+//                };
+//            }
 
+//        }
         return super.pay();
     }
 });
@@ -149,7 +202,8 @@ patch(PosStore.prototype, {
 //            var total_unit_price = categoryDiscounts[categ_id].total_unit_price;
 //
 //            if (discount_type === "percentage") {
-//                var applied_discount_percent = (applied_discount / total_unit_price) * 100;
+//            elif (category_id in categoryDiscounts){
+//                };      var applied_discount_percent = (applied_discount / total_unit_price) * 100;
 //                if (applied_discount_percent > discount_limit) {
 //                    this.dialog.add(AlertDialog, {
 //                        title: _t("Warning"),
@@ -173,3 +227,8 @@ patch(PosStore.prototype, {
 //        return super.pay();
 //    }
 //});
+
+
+
+
+
