@@ -6,7 +6,8 @@
         <field name="inherit_id" ref="point_of_sale.product_pos_category_form_view"/>
         <field name="arch" type="xml">
             <field name="parent_id" position="after">
-                <field name="discount_type" widget="radio" options="{'horizontal': true}"/>
+                <field name="discount_type" widget="radio" options="{'horizontal': true}"
+                       />
                 <label for="percent_discount" invisible="discount_type != 'percentage'"/>
                 <div class="o_row gap-3" invisible="discount_type != 'percentage'">
                     <field name="percent_discount"/>
